@@ -57,10 +57,7 @@ RCT_NOT_IMPLEMENTED(-(instancetype)init)
 
 - (BOOL)matchesInput:(NSString *)input flags:(UIKeyModifierFlags)flags
 {
-  // We consider the key command a match if the modifier flags match
-  // exactly or is there are no modifier flags. This means that for
-  // `cmd + r`, we will match both `cmd + r` and `r` but not `opt + r`.
-  return [_key isEqual:input] && (_flags == flags || flags == 0);
+  return [_key isEqual:[input lowercaseString]] && _flags == flags;
 }
 
 - (NSString *)description
@@ -251,10 +248,18 @@ RCT_EXPORT_MODULE()
 
 - (NSDictionary *)constantsToExport {
     return @{
-         @"keyModifierShift": @(UIKeyModifierAlphaShift),
+         @"keyModifierCapsLock": @(UIKeyModifierAlphaShift),
+         @"keyModifierShift": @(UIKeyModifierShift),
          @"keyModifierControl": @(UIKeyModifierControl),
-         @"keyModifierAlternate": @(UIKeyModifierAlternate),
+         @"keyModifierOption": @(UIKeyModifierAlternate),
          @"keyModifierCommand": @(UIKeyModifierCommand),
+         
+         @"keyModifierControlOption": @(UIKeyModifierControl | UIKeyModifierAlternate),
+         @"keyModifierControlOptionCommand": @(UIKeyModifierControl | UIKeyModifierAlternate | UIKeyModifierCommand),
+         @"keyModifierControlCommand": @(UIKeyModifierControl | UIKeyModifierCommand),
+         @"keyModifierOptionCommand": @(UIKeyModifierAlternate | UIKeyModifierCommand),
+         @"keyModifierShiftCommand": @(UIKeyModifierShift | UIKeyModifierCommand),
+
          @"keyModifierNumericPad": @(UIKeyModifierNumericPad),
          @"keyInputUpArrow": UIKeyInputUpArrow,
          @"keyInputDownArrow": UIKeyInputDownArrow,
@@ -287,7 +292,7 @@ RCT_REMAP_METHOD(registerKeyCommand,
             modifierFlags:[flags integerValue]
             action:^(__unused UIKeyCommand *command) {
               [self sendEventWithName:@"onKeyCommand" body:@{
-                   @"input": command.input,
+                   @"input": [command.input lowercaseString],
                    @"modifierFlags": [NSNumber numberWithInteger:command.modifierFlags]
               }];
             }];

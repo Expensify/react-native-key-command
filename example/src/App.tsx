@@ -9,8 +9,16 @@ export default function App() {
   React.useEffect(() => {
     registerKeyCommand([
       {
-        input: 'k',
+        input: 'j',
+        modifierFlags: constants.keyModifierShift,
+      },
+      {
+        input: 'j',
         modifierFlags: constants.keyModifierCommand,
+      },
+      {
+        input: 'j',
+        modifierFlags: constants.keyModifierShiftCommand,
       },
     ]);
 
