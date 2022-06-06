@@ -137,7 +137,6 @@
 				47F7ED3B7971BE374F7B8635 /* Pods-KeyCommandExample.debug.xcconfig */,
 				E00ACF0FDA8BF921659E2F9A /* Pods-KeyCommandExample.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -554,6 +553,7 @@
 				PRODUCT_NAME = KeyCommandExample;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -575,6 +575,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.reactnativekeycommand;
 				PRODUCT_NAME = KeyCommandExample;
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;

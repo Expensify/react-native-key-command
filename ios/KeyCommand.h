@@ -1,7 +1,8 @@
 #import <React/RCTBridgeModule.h>
+#import <React/RCTEventEmitter.h>
 #import <UIKit/UIKit.h>
 
-@interface KeyCommand : NSObject <RCTBridgeModule>
+@interface KeyCommand : RCTEventEmitter <RCTBridgeModule>
 
 @end
 

@@ -1,18 +1,31 @@
 import * as React from 'react';
 
 import { StyleSheet, View, Text } from 'react-native';
-import { multiply } from 'react-native-key-command';
+import { registerKeyCommand, constants, eventEmitter } from 'react-native-key-command';
 
 export default function App() {
-  const [result, setResult] = React.useState<number | undefined>();
+  const [history, setHistory] = React.useState([]);
 
   React.useEffect(() => {
-    multiply(3, 7).then(setResult);
+    registerKeyCommand([
+      {
+        input: 'k',
+        modifierFlags: constants.keyModifierCommand,
+      },
+    ]);
+
+    const eventListener = eventEmitter.addListener('onKeyCommand', (event) => {
+      setHistory(state => [event, ...state].slice(0, 20));
+    });
+
+    return eventListener.remove;
   }, []);
 
   return (
     <View style={styles.container}>
-      <Text>Result: {result}</Text>
+      {history.map((item, key) => (
+        <Text key={key}>{JSON.stringify(item)}</Text>
+      ))}
     </View>
   );
 }
