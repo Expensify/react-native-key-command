@@ -269,7 +269,6 @@ RCT_EXPORT_MODULE()
     };
 }
 
-
 RCT_REMAP_METHOD(registerKeyCommand,
                  registerKeyCommand:(NSArray *)json
                  withResolver:(RCTPromiseResolveBlock)resolve
@@ -288,7 +287,7 @@ RCT_REMAP_METHOD(registerKeyCommand,
 
       dispatch_async(dispatch_get_main_queue(), ^{
         [[HardwareKeyCommands sharedInstance]
-           registerKeyCommandWithInput:input
+            registerKeyCommandWithInput:input
             modifierFlags:[flags integerValue]
             action:^(__unused UIKeyCommand *command) {
               [self sendEventWithName:@"onKeyCommand" body:@{
@@ -302,6 +301,31 @@ RCT_REMAP_METHOD(registerKeyCommand,
   resolve(nil);
 }
 
+RCT_REMAP_METHOD(unregisterKeyCommand,
+                 unregisterKeyCommand:(NSArray *)json
+                 withResolver:(RCTPromiseResolveBlock)resolve
+                 withRejecter:(RCTPromiseRejectBlock)reject)
+{
+  
+  NSArray<NSDictionary *> *commandsArray = json;
+  
+  for (NSDictionary *commandJSON in commandsArray) {
+      NSString *input = commandJSON[@"input"];
+      NSNumber *flags = commandJSON[@"modifierFlags"];
 
+      if (!flags) {
+          flags = @0;
+      }
+
+      dispatch_async(dispatch_get_main_queue(), ^{
+        [[HardwareKeyCommands sharedInstance]
+            unregisterKeyCommandWithInput:input
+            modifierFlags:[flags integerValue]
+        ];
+      });
+  }
+  
+  resolve(nil);
+}
 
 @end
