@@ -84,8 +84,8 @@ function bindHandlerToKeydownEvent(event) {
 }
 
 // Make sure we don't add multiple listeners
+eventEmitter.removeAllListeners('onKeyCommand');
 eventEmitter.addListener('onKeyCommand', bindHandlerToKeydownEvent);
-eventEmitter.removeListener('onKeyCommand', bindHandlerToKeydownEvent);
 
 /**
  * Unsubscribes a keyboard event handler.

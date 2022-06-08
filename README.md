@@ -24,10 +24,10 @@ useEffect(() => {
 
 // Register event listener
 useEffect(() => {
-  eventEmitter.addListener('onKeyCommand', console.log);
+  const subscription = eventEmitter.addListener('onKeyCommand', console.log);
 
   return () => {
-    eventEmitter.removeListener('onKeyCommand', console.log);
+    subscription.remove();
   }
 }, [])
 ```
