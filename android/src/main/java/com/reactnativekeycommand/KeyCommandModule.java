@@ -80,6 +80,7 @@ public class KeyCommandModule extends ReactContextBaseJavaModule {
   private WritableMap getJsEventParams(int keyCode, KeyEvent keyEvent, Integer repeatCount) {
     WritableMap params = new WritableNativeMap();
     int action = keyEvent.getAction();
+    int modifiers = keyEvent.getModifiers();
     char pressedKey = (char) keyEvent.getUnicodeChar();
 
     if (keyEvent.getAction() == KeyEvent.ACTION_MULTIPLE && keyCode == KeyEvent.KEYCODE_UNKNOWN) {
@@ -93,8 +94,7 @@ public class KeyCommandModule extends ReactContextBaseJavaModule {
       params.putInt("repeatcount", repeatCount);
     }
 
-    params.putInt("keyCode", keyCode);
-    params.putInt("action", action);
+    params.putInt("modifierFlags", modifiers);
     params.putString("input", String.valueOf(pressedKey));
 
     return params;
@@ -110,7 +110,22 @@ public class KeyCommandModule extends ReactContextBaseJavaModule {
   @Override
   public Map<String, Object> getConstants() {
     final Map<String, Object> constants = new HashMap<>();
-    constants.put("DEFAULT_EVENT_NAME", "New Event");
+    constants.put("keyModifierCapsLock", KeyEvent.KEYCODE_CAPS_LOCK);
+    constants.put("keyModifierShift", KeyEvent.KEYCODE_ENVELOPE);
+    constants.put("keyModifierControl", null);
+    constants.put("keyModifierOption", null);
+    constants.put("keyModifierCommand", KeyEvent.META_CTRL_LEFT_ON);
+    constants.put("keyModifierControlOption", null);
+    constants.put("keyModifierControlOptionCommand", null);
+    constants.put("keyModifierControlCommand", null);
+    constants.put("keyModifierOptionCommand", null);
+    constants.put("keyModifierShiftCommand", null);
+    constants.put("keyModifierNumericPad", null);
+    constants.put("keyInputUpArrow", null);
+    constants.put("keyInputDownArrow", null);
+    constants.put("keyInputLeftArrow", null);
+    constants.put("keyInputRightArrow", null);
+    constants.put("keyInputEscape", null);
     return constants;
   }
 
