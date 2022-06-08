@@ -98,11 +98,16 @@ RCT_NOT_IMPLEMENTED(-(instancetype)init)
 
 - (void)handleKeyUIEventSwizzle:(UIEvent *)event
 {
+  NSString *unmodifiedInput = nil;
   NSString *modifiedInput = nil;
   UIKeyModifierFlags modifierFlags = 0;
   BOOL isKeyDown = NO;
   long keyCode = 0;
-
+  
+  if ([event respondsToSelector:@selector(_unmodifiedInput)]) {
+    unmodifiedInput = [event _unmodifiedInput];
+  }
+  
   if ([event respondsToSelector:@selector(_modifiedInput)]) {
     modifiedInput = [event _modifiedInput];
   }
@@ -133,7 +138,7 @@ RCT_NOT_IMPLEMENTED(-(instancetype)init)
 
     // Ignore key commands (except escape) when there's an active responder
     if (!firstResponder) {
-      [self RCT_handleKeyCommand:modifiedInput flags:modifierFlags];
+      [self RCT_handleKeyCommand:unmodifiedInput flags:modifierFlags];
     }
   }
 };
