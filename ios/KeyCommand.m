@@ -101,6 +101,7 @@ RCT_NOT_IMPLEMENTED(-(instancetype)init)
   NSString *modifiedInput = nil;
   UIKeyModifierFlags modifierFlags = 0;
   BOOL isKeyDown = NO;
+  long keyCode = 0;
 
   if ([event respondsToSelector:@selector(_modifiedInput)]) {
     modifiedInput = [event _modifiedInput];
@@ -112,6 +113,10 @@ RCT_NOT_IMPLEMENTED(-(instancetype)init)
 
   if ([event respondsToSelector:@selector(_isKeyDown)]) {
     isKeyDown = [event _isKeyDown];
+  }
+  
+  if ([event respondsToSelector:@selector(_keyCode)]) {
+    keyCode = [event _keyCode];
   }
 
   BOOL interactionEnabled = !UIApplication.sharedApplication.isIgnoringInteractionEvents;
