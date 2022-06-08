@@ -84,8 +84,8 @@ function bindHandlerToKeydownEvent(event) {
 }
 
 // Make sure we don't add multiple listeners
-// document.removeEventListener('keydown', bindHandlerToKeydownEvent, {capture: true});
-// document.addEventListener('keydown', bindHandlerToKeydownEvent, {capture: true});
+eventEmitter.addListener('onKeyCommand', bindHandlerToKeydownEvent);
+eventEmitter.removeListener('onKeyCommand', bindHandlerToKeydownEvent);
 
 /**
  * Unsubscribes a keyboard event handler.
@@ -123,6 +123,12 @@ function getPlatformEquivalentForKeys(keys) {
   });
 }
 
+/**
+ * Generates native keyCodes for given modifiers, e.g. CTRL -> 52535 for iOS
+ *
+ * @param {String|Array<String>} modifiers
+ * @returns {Number}
+ */
 function getNativeModifiers(modifiers) {
   if (modifiers.length === 1) {
     if (modifiers.includes('CTRL')) {
@@ -212,7 +218,5 @@ const KeyboardShortcut = {
   subscribe,
   getDocumentedShortcuts,
 };
-
-eventEmitter.addListener('onKeyCommand', bindHandlerToKeydownEvent);
 
 export default KeyboardShortcut;
