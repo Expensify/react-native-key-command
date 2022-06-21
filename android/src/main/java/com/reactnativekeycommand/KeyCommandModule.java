@@ -15,8 +15,8 @@ import com.facebook.react.bridge.ReadableArray;
 
 import android.view.KeyEvent;
 
-import java.util.Set;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Map;
 import java.util.HashMap;
 
@@ -25,14 +25,14 @@ public class KeyCommandModule extends ReactContextBaseJavaModule {
   private static ReactApplicationContext reactContext = null;
   private DeviceEventManagerModule.RCTDeviceEventEmitter mJSModule = null;
   private static KeyCommandModule instance = null;
+  private static HashSet<KeyCommands> commands = new HashSet<>();
 
   public static final String NAME = "KeyCommand";
-
-  private static final Set<String> commandsArray = new HashSet<String>();
 
   public KeyCommandModule(ReactApplicationContext reactContext) {
     super(reactContext);
     this.reactContext = reactContext;
+    this.commands = new HashSet();
   }
 
   public static KeyCommandModule initKeyCommandModule(ReactApplicationContext reactContext) {
@@ -44,6 +44,32 @@ public class KeyCommandModule extends ReactContextBaseJavaModule {
     return instance;
   }
 
+  private void addKeyCommand(String input, Integer modifierFlags) {
+    KeyCommands customCommand = new KeyCommands();
+    customCommand.setInput(input);
+    customCommand.setModifierFlags(modifierFlags);
+    commands.add(customCommand);
+  }
+
+  private void removeKeyCommand(String input, Integer modifierFlags) {
+    for (KeyCommands customCommand : commands) {
+      if (customCommand.getInput().equals(input) && customCommand.getModifierFlags() == modifierFlags) {
+        commands.remove(customCommand);
+      }
+    }
+  }
+
+  private boolean matchesInput(int keyCode, KeyEvent keyEvent) {
+    for (KeyCommands customCommand : commands) {
+      String pressedKey = Character.toString((char) keyEvent.getUnicodeChar());
+      if (customCommand.getInput().equals(pressedKey.toLowerCase(Locale.ROOT)) && customCommand.getModifierFlags() == keyEvent.getModifiers()) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
   public void onKeyDownEvent(int keyCode, KeyEvent keyEvent) {
     if (!reactContext.hasActiveCatalystInstance()) {
       return;
@@ -52,7 +78,11 @@ public class KeyCommandModule extends ReactContextBaseJavaModule {
     if (mJSModule == null) {
       mJSModule = reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class);
     }
-    mJSModule.emit("onKeyCommand", getJsEventParams(keyCode, keyEvent, null));
+
+
+    if (matchesInput(keyCode, keyEvent)) {
+      mJSModule.emit("onKeyCommand", getJsEventParams(keyCode, keyEvent, null));
+    }
   };
 
   public void onKeyUpEvent(int keyCode, KeyEvent keyEvent) {
@@ -63,7 +93,10 @@ public class KeyCommandModule extends ReactContextBaseJavaModule {
     if (mJSModule == null) {
       mJSModule = reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class);
     }
-    mJSModule.emit("onKeyCommand", getJsEventParams(keyCode, keyEvent, null));
+
+    if (matchesInput(keyCode, keyEvent)) {
+      mJSModule.emit("onKeyCommand", getJsEventParams(keyCode, keyEvent, null));
+    }
   };
 
   public void onKeyMultipleEvent(int keyCode, int repeatCount, KeyEvent keyEvent) {
@@ -74,7 +107,10 @@ public class KeyCommandModule extends ReactContextBaseJavaModule {
     if (mJSModule == null) {
       mJSModule = reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class);
     }
-    mJSModule.emit("onKeyCommand", getJsEventParams(keyCode, keyEvent, repeatCount));
+
+    if (matchesInput(keyCode, keyEvent)) {
+      mJSModule.emit("onKeyCommand", getJsEventParams(keyCode, keyEvent, null));
+    }
   };
 
   private WritableMap getJsEventParams(int keyCode, KeyEvent keyEvent, Integer repeatCount) {
@@ -131,11 +167,19 @@ public class KeyCommandModule extends ReactContextBaseJavaModule {
 
   @ReactMethod
   public void registerKeyCommand(ReadableArray json, Promise promise) {
+    for (int i = 0; i < json.size(); i++) {
+      addKeyCommand(json.getMap(i).getString("input"), json.getMap(i).getInt("modifierFlags"));
+    }
+
     promise.resolve(null);
   }
 
   @ReactMethod
   public void unregisterKeyCommand(ReadableArray json, Promise promise) {
+    for (int i = 0; i < json.size(); i++) {
+      removeKeyCommand(json.getMap(i).getString("input"), json.getMap(i).getInt("modifierFlags"));
+    }
+    
     promise.resolve(null);
   }
 }
