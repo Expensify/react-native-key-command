@@ -1,97 +1,152 @@
-import React from 'react';
-import { Text, View, StyleSheet } from 'react-native';
-import KeyboardShortcut from './expensify/Shortcuts';
-import CONST from './expensify/CONST';
+import React, { FC } from 'react';
+import { Text, View, Switch, StyleSheet, SafeAreaView } from 'react-native';
+import {
+  registerKeyCommand,
+  unregisterKeyCommand,
+  eventEmitter,
+  constants,
+} from 'react-native-key-command';
 
-export default function App() {
-  React.useEffect(() => {
-    /**
-     * Library default usage example:
-     * registerKeyCommand([{ input: 'k', modifierFlags: constants.keyModifierCommand }]);
-     */
-    const searchShortcutConfig = CONST.KEYBOARD_SHORTCUTS.SEARCH;
-    const searchShortcutSubscription = KeyboardShortcut.subscribe(
-      searchShortcutConfig.shortcutKey,
-      () => {
-        const message = 'called: KEYBOARD_SHORTCUTS.SEARCH';
-        alert(message);
-        console.log(message);
-      },
-      searchShortcutConfig.descriptionKey,
-      searchShortcutConfig.modifiers,
-      true
-    );
+type PostsProps = {};
 
-    const copyShortcutConfig = CONST.KEYBOARD_SHORTCUTS.COPY;
-    const copyShortcutSubscription = KeyboardShortcut.subscribe(
-      copyShortcutConfig.shortcutKey,
-      () => {
-        const message = 'called: KEYBOARD_SHORTCUTS.COPY';
-        alert(message);
-        console.log(message);
-      },
-      copyShortcutConfig.descriptionKey,
-      copyShortcutConfig.modifiers,
-      false
-    );
-
-    const modalShortcutConfig = CONST.KEYBOARD_SHORTCUTS.SHORTCUT_MODAL;
-    const modalShortcutSubscription = KeyboardShortcut.subscribe(
-      modalShortcutConfig.shortcutKey,
-      () => {
-        const message = 'called: KEYBOARD_SHORTCUTS.SHORTCUT_MODAL';
-        alert(message);
-        console.log(message);
-      },
-      modalShortcutConfig.descriptionKey,
-      modalShortcutConfig.modifiers,
-      true
-    );
-
-    const groupShortcutConfig = CONST.KEYBOARD_SHORTCUTS.NEW_GROUP;
-    const groupShortcutSubscription = KeyboardShortcut.subscribe(
-      groupShortcutConfig.shortcutKey,
-      () => {
-        const message = 'called: KEYBOARD_SHORTCUTS.NEW_GROUP';
-        alert(message);
-        console.log(message);
-      },
-      groupShortcutConfig.descriptionKey,
-      groupShortcutConfig.modifiers,
-      true
-    );
-
-    return () => {
-      searchShortcutSubscription.remove();
-      copyShortcutSubscription.remove();
-      modalShortcutSubscription.remove();
-      groupShortcutSubscription.remove();
-    }
+export default () => {
+  const [history, setHistory] = React.useState([]);
+  const [toggles, setToggles] = React.useState({
+    searchShortcut: false,
+    copyShortcut: false,
+    modalShortcut: false,
+    groupShortcut: false,
   });
 
-  return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Go check your console, available shortcuts are:</Text>
+  React.useEffect(() => {
+    const intervalId = setInterval(() => {
+      setHistory(() => []);
+    }, 5000);
 
-      <Text style={styles.item}>→ CTRL + K</Text>
-      <Text style={styles.item}>→ CTRL + SHIFT + K</Text>
-      <Text style={styles.item}>→ CTRL + I</Text>
-      <Text style={styles.item}>→ CTRL + C</Text>
-    </View>
+    eventEmitter.removeAllListeners('onKeyCommand');
+    eventEmitter.addListener('onKeyCommand', (res) => {
+      const response = JSON.stringify(res);
+      setHistory((state) => state.concat(response));
+    });
+
+    return () => clearInterval(intervalId);
+  }, []);
+
+  const handleToggle = (name: string) => (value: boolean) => {
+    setToggles((state) => ({
+      ...state,
+      [name]: value,
+    }));
+
+    if (value) {
+      if (name === 'searchShortcut') {
+        registerKeyCommand([
+          { input: 'k', modifierFlags: constants.keyModifierCommand },
+        ]);
+      }
+      if (name === 'copyShortcut') {
+        registerKeyCommand([
+          { input: 'k', modifierFlags: constants.keyModifierShiftCommand },
+        ]);
+      }
+      if (name === 'modalShortcut') {
+        registerKeyCommand([
+          { input: 'i', modifierFlags: constants.keyModifierCommand },
+        ]);
+      }
+      if (name === 'groupShortcut') {
+        registerKeyCommand([
+          { input: 'c', modifierFlags: constants.keyModifierCommand },
+        ]);
+      }
+    } else {
+      if (name === 'searchShortcut') {
+        unregisterKeyCommand([
+          { input: 'k', modifierFlags: constants.keyModifierCommand },
+        ]);
+      }
+      if (name === 'copyShortcut') {
+        unregisterKeyCommand([
+          { input: 'k', modifierFlags: constants.keyModifierShiftCommand },
+        ]);
+      }
+      if (name === 'modalShortcut') {
+        unregisterKeyCommand([
+          { input: 'i', modifierFlags: constants.keyModifierCommand },
+        ]);
+      }
+      if (name === 'groupShortcut') {
+        unregisterKeyCommand([
+          { input: 'c', modifierFlags: constants.keyModifierCommand },
+        ]);
+      }
+    }
+  }
+
+  return (
+    <SafeAreaView style={styles.container}>
+      <View style={styles.shortcuts}>
+        <View style={styles.row}>
+          <Switch onValueChange={handleToggle('searchShortcut')} value={toggles.searchShortcut} />
+          <Text style={styles.textLarge}>CTRL + K</Text>
+        </View>
+
+        <View style={styles.row}>
+          <Switch onValueChange={handleToggle('copyShortcut')} value={toggles.copyShortcut} />
+          <Text style={styles.textLarge}>CTRL + SHIFT + K</Text>
+        </View>
+
+        <View style={styles.row}>
+          <Switch onValueChange={handleToggle('modalShortcut')} value={toggles.modalShortcut} />
+          <Text style={styles.textLarge}>CTRL + I</Text>
+        </View>
+
+        <View style={styles.row}>
+          <Switch onValueChange={handleToggle('groupShortcut')} value={toggles.groupShortcut} />
+          <Text style={styles.textLarge}>CTRL + C</Text>
+        </View>
+      </View>
+
+      <View style={styles.history}>
+        {history.map(item => (
+          <Text style={styles.textSmall}>CTRL + C</Text>
+        ))}
+
+        <Text style={[styles.textSmall, styles.textHelper]}>History is cleared every 5 seconds</Text>
+      </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    padding: 24,
+    margin: 24,
   },
-  title: {
-    fontSize: 24,
-    padding: 24,
-    fontWeight: '600',
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
-  item: {
-    fontSize: 24,
+  textLarge: {
     padding: 12,
+  },
+  shortcuts: {
+    backgroundColor: '#eee',
+    padding: 12,
+    borderRadius: 4,
+    marginBottom: 24,
+  },
+  history: {
+    padding: 12,
+    borderWidth: 1,
+    borderColor: '#eee',
+  },
+  textSmall: {
+    paddingVertical: 6,
+  },
+  textHelper: {
+    paddingVertical: 6,
+    color: '#333',
+    textAlign: 'right',
+    fontStyle: 'italic',
   },
 });
