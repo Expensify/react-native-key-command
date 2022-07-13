@@ -132,6 +132,6 @@ if (isNewArchitectureEnabled()) {
   react {
     jsRootDir = file("../src/")
     libraryName = "KeyCommand"
-    codegenJavaPackageName = "com.reactnativekeycommand"
+    codegenJavaPackageName = "com.expensify.reactnativekeycommand"
   }
 }
