@@ -1,6 +1,24 @@
-# Contributing
+# Contributing to Expensify
 
-We want this community to be friendly and respectful to each other. Please follow it in all your interactions with the project.
+Welcome! Thanks for checking out the new Expensify app and for taking the time to contribute!
+
+Suggested change 
+## Getting Started
+If you would like to become an Expensify contributor, the first step is to read this document in its entirety. Please read the document before asking questions, as it may be covered within the documentation.
+
+## Code of Conduct
+This project and everyone participating in it is governed by the Expensify [Code of Conduct](https://github.com/Expensify/App/blob/main/CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code. Please report unacceptable behavior to contributors@expensify.com.
+
+## Restrictions
+At this time, we are not hiring contractors in Crimea, North Korea, Russia, Iran, Cuba, or Syria.
+
+## Asking Questions
+If you have any general questions, please ask in the #expensify-open-source Slack channel. To request an invite to the channel, just email contributors@expensify.com with the subject Slack Channel Invite and include a link to your Upwork profile. We'll send you an invite! Note: The Expensify team will not be able to respond to direct messages in Slack.
+If you are hired for an Upwork job and have any job-specific questions, please ask in the GitHub issue or pull request. This will ensure that the person addressing your question has as much context as possible.
+
+## Reporting Vulnerabilities
+If you've found a vulnerability, please email security@expensify.com with the subject Vulnerability Report instead of creating an issue.
+
 
 ## Development workflow
 
@@ -54,45 +72,7 @@ yarn test
 To edit the Objective-C files, open `example/ios/KeyCommandExample.xcworkspace` in XCode and find the source files at `Pods > Development Pods > react-native-key-command`.
 
 To edit the Kotlin files, open `example/android` in Android studio and find the source files at `reactnativekeycommand` under `Android`.
-### Commit message convention
 
-We follow the [conventional commits specification](https://www.conventionalcommits.org/en) for our commit messages:
-
-- `fix`: bug fixes, e.g. fix crash due to deprecated method.
-- `feat`: new features, e.g. add new method to the module.
-- `refactor`: code refactor, e.g. migrate from class components to hooks.
-- `docs`: changes into documentation, e.g. add usage example for the module..
-- `test`: adding or updating tests, e.g. add integration tests using detox.
-- `chore`: tooling changes, e.g. change CI config.
-
-Our pre-commit hooks verify that your commit message matches this format when committing.
-
-### Linting and tests
-
-[ESLint](https://eslint.org/), [Prettier](https://prettier.io/), [TypeScript](https://www.typescriptlang.org/)
-
-We use [TypeScript](https://www.typescriptlang.org/) for type checking, [ESLint](https://eslint.org/) with [Prettier](https://prettier.io/) for linting and formatting the code, and [Jest](https://jestjs.io/) for testing.
-
-Our pre-commit hooks verify that the linter and tests pass when committing.
-
-### Publishing to npm
-
-We use [release-it](https://github.com/release-it/release-it) to make it easier to publish new versions. It handles common tasks like bumping version based on semver, creating tags and releases etc.
-
-To publish new versions, run the following:
-
-```sh
-yarn release
-```
-
-### Scripts
-
-The `package.json` file contains various scripts for common tasks:
-
-- `yarn bootstrap`: setup project by installing all dependencies and pods.
-- `yarn typescript`: type-check files with TypeScript.
-- `yarn lint`: lint files with ESLint.
-- `yarn test`: run unit tests with Jest.
 - `yarn example start`: start the Metro server for the example app.
 - `yarn example android`: run the example app on Android.
 - `yarn example ios`: run the example app on iOS.
@@ -100,7 +80,6 @@ The `package.json` file contains various scripts for common tasks:
 ### Sending a pull request
 
 > **Working on your first pull request?** You can learn how from this _free_ series: [How to Contribute to an Open Source Project on GitHub](https://app.egghead.io/playlists/how-to-contribute-to-an-open-source-project-on-github).
-
 When you're sending a pull request:
 
 - Prefer small pull requests focused on one change.
