@@ -29,8 +29,8 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            yarn install --cwd example --frozen-lockfile
-            yarn install --frozen-lockfile
+            npm install --cwd example --frozen-lockfile
+            npm install --frozen-lockfile
       - save_cache:
           key: dependencies-{{ checksum "package.json" }}
           paths: node_modules
@@ -48,7 +48,7 @@ jobs:
       - run:
           name: Lint files
           command: |
-            yarn lint
+            npm run lint
 
   unit-tests:
     executor: default
@@ -57,7 +57,7 @@ jobs:
       - run:
           name: Run unit tests
           command: |
-            yarn test --coverage
+            npm test --coverage
       - store_artifacts:
           path: coverage
           destination: coverage
@@ -69,7 +69,7 @@ jobs:
       - run:
           name: Build package
           command: |
-            yarn prepare
+            npm prepare
 
 workflows:
   build-and-test:
