@@ -117,5 +117,8 @@
       "commonjs",
       "module"
     ]
+  },
+  "dependencies": {
+    "underscore": "^1.13.4"
   }
 }
