@@ -50,15 +50,6 @@ jobs:
           command: |
             yarn lint
 
-  typescript:
-    executor: default
-    steps:
-      - attach_project
-      - run:
-          name: Typecheck files
-          command: |
-            yarn typescript
-
   unit-tests:
     executor: default
     steps:
@@ -85,9 +76,6 @@ workflows:
     jobs:
       - install-dependencies
       - lint:
-          requires:
-            - install-dependencies
-      - typescript:
           requires:
             - install-dependencies
       - unit-tests:

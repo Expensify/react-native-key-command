@@ -48,10 +48,9 @@ npm run example ios
 ```
 
 
-Make sure your code passes TypeScript and ESLint. Run the following to verify:
+Make sure your code passes ESLint. Run the following to verify:
 
 ```sh
-npm run typescript
 npm run lint
 ```
 
