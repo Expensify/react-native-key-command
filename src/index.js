@@ -15,12 +15,20 @@ const KeyCommand = NativeModules.KeyCommand ? NativeModules.KeyCommand : new Pro
     },
 );
 
-function constants() {
-    return KeyCommand.constants();
+function getConstants() {
+    return KeyCommand.getConstants();
 }
 
-function multiply(a, b) {
-    return KeyCommand.multiply(a, b);
+function registerKeyCommand(a, b) {
+    return KeyCommand.registerKeyCommand(a, b);
 }
 
-export {multiply, constants};
+function unregisterKeyCommand(a, b) {
+    return KeyCommand.unregisterKeyCommand(a, b);
+}
+
+export {
+    registerKeyCommand,
+    unregisterKeyCommand,
+    getConstants,
+};
