@@ -15,18 +15,44 @@ const KeyCommand = NativeModules.KeyCommand ? NativeModules.KeyCommand : new Pro
     },
 );
 
+/**
+ * predefined multiplatform commands list.
+ *
+ * @returns {Object} predefined command from getConstants enum.
+ */
 function getConstants() {
     return KeyCommand.getConstants();
 }
 
+/**
+ * Registers key command combination list.
+ *
+ * @param {Object[]} keyCommands - List of key command objects.
+ * @param {string} keyCommands[].input - any character key from the keyboard.
+ * @param {number} keyCommands[].modifierFlags - predefined command from getConstants enum.
+ * @returns {Promise}
+ */
 function registerKeyCommand(keyCommands) {
     return KeyCommand.registerKeyCommand(keyCommands);
 }
 
+/**
+ * Unregister key command combination list.
+ *
+ * @param {Object[]} keyCommands - List of key command objects.
+ * @param {string} keyCommands[].input - any character key from the keyboard.
+ * @param {number} keyCommands[].modifierFlags - predefined command from getConstants enum.
+ * @returns {Promise}
+ */
 function unregisterKeyCommand(keyCommands) {
     return KeyCommand.unregisterKeyCommand(keyCommands);
 }
 
+/**
+ * Key command Event listener.
+ *
+ * @returns {Object} eventListener instance to register a callback.
+ */
 function getEventEmitter() {
     return new NativeEventEmitter(KeyCommand);
 }

@@ -17,7 +17,8 @@ export default function App() {
     }, []);
 
     React.useEffect(() => {
-        const subscription = eventEmitter.addListener('onKeyCommand', console.log);
+        const handleKeyCommand = () => {};
+        const subscription = eventEmitter.addListener('onKeyCommand', handleKeyCommand);
         return () => {
             subscription.remove();
         };
