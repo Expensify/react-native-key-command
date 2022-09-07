@@ -28,7 +28,7 @@ export default function App() {
 
     const handleSearchCommandPress = React.useCallback((response) => {
         setHistory(state => state.concat(response));
-    });
+    }, []);
 
     React.useEffect(() => {
         const SEARCH_COMMAND = {input: 'f', modifierFlags: KeyCommand.constants.keyModifierCommand};
