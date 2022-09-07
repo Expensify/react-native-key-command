@@ -9,21 +9,21 @@ npm install react-native-key-command
 ## Usage
 
 ```js
-import {registerKeyCommand, constants, eventEmitter} from 'react-native-key-command';
+import * as KeyCommand from 'react-native-key-command';
 
 // ...
 
 /**
  * Register a command for [k + CMD] combination
  */
-registerKeyCommand([
-  {input: 'd', modifierFlags: constants.keyModifierCommand},
+KeyCommand.registerKeyCommand([
+  {input: 'd', modifierFlags: KeyCommand.constants.keyModifierCommand},
 ]);
 
 /**
  * Add an event listener
  */
-eventEmitter.addListener('onKeyCommand', console.log);
+KeyCommand.eventEmitter.addListener('onKeyCommand', console.log);
 ```
 
 ## Contributing
