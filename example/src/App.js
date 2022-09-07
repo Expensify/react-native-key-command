@@ -1,24 +1,22 @@
 import * as React from 'react';
-import {
-    registerKeyCommand, unregisterKeyCommand, constants, eventEmitter,
-} from 'react-native-key-command';
+import * as KeyCommand from 'react-native-key-command';
 
 export default function App() {
     React.useEffect(() => {
-        const searchCommandId = {input: 'd', modifierFlags: constants.keyModifierCommand};
+        const searchCommandId = {input: 'f', modifierFlags: KeyCommand.constants.keyModifierCommand};
 
-        registerKeyCommand([
-            {input: 'd', modifierFlags: constants.keyModifierCommand},
+        KeyCommand.registerKeyCommand([
+            searchCommandId,
         ]);
 
         return () => {
-            unregisterKeyCommand([searchCommandId]);
+            KeyCommand.unregisterKeyCommand([searchCommandId]);
         };
     }, []);
 
     React.useEffect(() => {
         const handleKeyCommand = () => {};
-        const subscription = eventEmitter.addListener('onKeyCommand', handleKeyCommand);
+        const subscription = KeyCommand.eventEmitter.addListener('onKeyCommand', handleKeyCommand);
         return () => {
             subscription.remove();
         };
@@ -26,4 +24,3 @@ export default function App() {
 
     return null;
 }
-
