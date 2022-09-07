@@ -80,6 +80,25 @@ RCT_NOT_IMPLEMENTED(-(instancetype)init)
 
 @implementation HardwareKeyCommands
 
+- (instancetype)init
+{
+  if ((self = [super init])) {
+    _commands = [NSMutableSet new];
+  }
+  return self;
+}
+
++ (instancetype)sharedInstance
+{
+  static HardwareKeyCommands *sharedInstance;
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+    sharedInstance = [self new];
+  });
+
+  return sharedInstance;
+}
+
 + (void)initialize
 {
   SEL originalKeyEventSelector = NSSelectorFromString(@"handleKeyUIEvent:");
@@ -182,25 +201,6 @@ RCT_NOT_IMPLEMENTED(-(instancetype)init)
       }
     }
   }
-}
-
-+ (instancetype)sharedInstance
-{
-  static HardwareKeyCommands *sharedInstance;
-  static dispatch_once_t onceToken;
-  dispatch_once(&onceToken, ^{
-    sharedInstance = [self new];
-  });
-
-  return sharedInstance;
-}
-
-- (instancetype)init
-{
-  if ((self = [super init])) {
-    _commands = [NSMutableSet new];
-  }
-  return self;
 }
 
 - (void)registerKeyCommandWithInput:(NSString *)input
