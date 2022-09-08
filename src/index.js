@@ -65,7 +65,7 @@ const eventEmitter = getEventEmitter();
  *
  * @param {string} keyCommand - Event name to listen to.
  * @param {Function} callback - Callback to be called when the event is triggered.
- * @returns {Function} eventListener instance to register a callback.
+ * @returns {Function} clear callback function to be called when component unmounts.
  */
 function addListener(keyCommand, callback) {
     registerKeyCommand([keyCommand]);
