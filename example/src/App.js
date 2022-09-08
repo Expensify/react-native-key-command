@@ -32,20 +32,7 @@ export default function App() {
 
     React.useEffect(() => {
         const SEARCH_COMMAND = {input: 'f', modifierFlags: KeyCommand.constants.keyModifierCommand};
-        KeyCommand.registerKeyCommand([
-            SEARCH_COMMAND,
-        ]);
-
-        return () => {
-            KeyCommand.unregisterKeyCommand([SEARCH_COMMAND]);
-        };
-    }, []);
-
-    React.useEffect(() => {
-        const subscription = KeyCommand.eventEmitter.addListener('onKeyCommand', handleSearchCommandPress);
-        return () => {
-            subscription.remove();
-        };
+        return KeyCommand.addListener(SEARCH_COMMAND, handleSearchCommandPress);
     }, []);
 
     return (

@@ -60,9 +60,33 @@ function getEventEmitter() {
 const constants = getConstants();
 const eventEmitter = getEventEmitter();
 
+/**
+ * Key command Event listener.
+ *
+ * @param {string} keyCommand - Event name to listen to.
+ * @param {Function} callback - Callback to be called when the event is triggered.
+ * @returns {Function} eventListener instance to register a callback.
+ */
+function addListener(keyCommand, callback) {
+    registerKeyCommand([keyCommand]);
+    const event = eventEmitter.addListener('onKeyCommand', (response) => {
+        if (response.input !== keyCommand.input || response.modifierFlags !== keyCommand.modifierFlags) {
+            return;
+        }
+
+        callback(response);
+    });
+
+    return () => {
+        event.remove();
+        unregisterKeyCommand([keyCommand]);
+    };
+}
+
 export {
     registerKeyCommand,
     unregisterKeyCommand,
     constants,
     eventEmitter,
+    addListener,
 };
