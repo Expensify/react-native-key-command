@@ -16,7 +16,7 @@ const KeyCommand = NativeModules.KeyCommand ? NativeModules.KeyCommand : new Pro
 );
 
 /**
- * predefined multiplatform commands list.
+ * Predefined multiplatform commands list.
  *
  * @returns {Object} predefined command from getConstants enum.
  */
@@ -61,11 +61,11 @@ const constants = getConstants();
 const eventEmitter = getEventEmitter();
 
 /**
- * Key command Event listener.
+ * Register key command and listen to the event.
  *
- * @param {string} keyCommand - Event name to listen to.
+ * @param {string} keyCommand - Key command combination.
  * @param {Function} callback - Callback to be called when the event is triggered.
- * @returns {Function} clear callback function to be called when component unmounts.
+ * @returns {Function} callback to remove the subscription.
  */
 function addListener(keyCommand, callback) {
     registerKeyCommands([keyCommand]);
