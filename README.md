@@ -18,7 +18,11 @@ React.useEffect(() => {
 }, []);
 ```
 
-Imperative Usage
+Imperative API provides you with a granular control over the library, e.g:
+- Declare multiple commands at once
+- Declare command in your React component (components/Shortcuts.js) and attach listener globally in your root component (Router.js)
+- Implement decoupled Register / Unregister commands
+
 ```js
 import * as KeyCommand from 'react-native-key-command';
 
@@ -56,7 +60,3 @@ See the [contributing guide](CONTRIBUTING.md) to learn how to contribute to the 
 ## License
 
 MIT
-
----
-
-Made with [create-react-native-library](https://github.com/callstack/react-native-builder-bob)
