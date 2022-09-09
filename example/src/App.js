@@ -1,6 +1,5 @@
 import * as React from 'react';
 import {
-    // eslint-disable-next-line no-restricted-imports
     SafeAreaView, StyleSheet, ScrollView, Text,
 } from 'react-native';
 import * as KeyCommand from 'react-native-key-command';
