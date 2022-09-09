@@ -32,8 +32,8 @@ function getConstants() {
  * @param {number} keyCommands[].modifierFlags - predefined command from getConstants enum.
  * @returns {Promise}
  */
-function registerKeyCommand(keyCommands) {
-    return KeyCommand.registerKeyCommand(keyCommands);
+function registerKeyCommands(keyCommands) {
+    return KeyCommand.registerKeyCommands(keyCommands);
 }
 
 /**
@@ -44,8 +44,8 @@ function registerKeyCommand(keyCommands) {
  * @param {number} keyCommands[].modifierFlags - predefined command from getConstants enum.
  * @returns {Promise}
  */
-function unregisterKeyCommand(keyCommands) {
-    return KeyCommand.unregisterKeyCommand(keyCommands);
+function unregisterKeyCommands(keyCommands) {
+    return KeyCommand.unregisterKeyCommands(keyCommands);
 }
 
 /**
@@ -68,7 +68,7 @@ const eventEmitter = getEventEmitter();
  * @returns {Function} clear callback function to be called when component unmounts.
  */
 function addListener(keyCommand, callback) {
-    registerKeyCommand([keyCommand]);
+    registerKeyCommands([keyCommand]);
     const event = eventEmitter.addListener('onKeyCommand', (response) => {
         if (response.input !== keyCommand.input || response.modifierFlags !== keyCommand.modifierFlags) {
             return;
@@ -79,13 +79,13 @@ function addListener(keyCommand, callback) {
 
     return () => {
         event.remove();
-        unregisterKeyCommand([keyCommand]);
+        unregisterKeyCommands([keyCommand]);
     };
 }
 
 export {
-    registerKeyCommand,
-    unregisterKeyCommand,
+    registerKeyCommands,
+    unregisterKeyCommands,
     constants,
     eventEmitter,
     addListener,

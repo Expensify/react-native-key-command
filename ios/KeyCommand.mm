@@ -279,8 +279,8 @@ RCT_EXPORT_MODULE()
     };
 }
 
-RCT_REMAP_METHOD(registerKeyCommand,
-                 registerKeyCommand:(NSArray *)json
+RCT_REMAP_METHOD(registerKeyCommands,
+                 registerKeyCommands:(NSArray *)json
                  withResolver:(RCTPromiseResolveBlock)resolve
                  withRejecter:(RCTPromiseRejectBlock)reject)
 {
@@ -311,8 +311,8 @@ RCT_REMAP_METHOD(registerKeyCommand,
   resolve(nil);
 }
 
-RCT_REMAP_METHOD(unregisterKeyCommand,
-                 unregisterKeyCommand:(NSArray *)json
+RCT_REMAP_METHOD(unregisterKeyCommands,
+                 unregisterKeyCommands:(NSArray *)json
                  withResolver:(RCTPromiseResolveBlock)resolve
                  withRejecter:(RCTPromiseRejectBlock)reject)
 {

@@ -29,7 +29,7 @@ const SEARCH_COMMAND = {input: 'd', modifierFlags: KeyCommand.constants.keyModif
 /**
  * Register a command for [k + CMD] combination
  */
-KeyCommand.registerKeyCommand([SEARCH_COMMAND]);
+KeyCommand.registerKeyCommands([SEARCH_COMMAND]);
 
 /**
  * Add a global event listener that will trigger when any
@@ -46,7 +46,7 @@ KeyCommand.eventEmitter.addListener('onKeyCommand', console.log);
 /**
  * Unregister keycommand
  */
-KeyCommand.unregisterKeyCommand([SEARCH_COMMAND]);
+KeyCommand.unregisterKeyCommands([SEARCH_COMMAND]);
 ```
 
 ## Contributing
