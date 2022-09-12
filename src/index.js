@@ -63,7 +63,10 @@ const eventEmitter = getEventEmitter();
 /**
  * Register key command and listen to the event.
  *
- * @param {string} keyCommand - Key command combination.
+ * @param {Object} keyCommand - List of key command objects.
+ * @param {string} keyCommand.input - any character key from the keyboard.
+ * @param {number} keyCommand.modifierFlags - predefined command from getConstants enum.
+ *
  * @param {Function} callback - Callback to be called when the event is triggered.
  * @returns {Function} callback to remove the subscription.
  */
