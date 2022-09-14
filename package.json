@@ -97,7 +97,10 @@
     "parser": "@babel/eslint-parser",
     "extends": [
       "expensify"
-    ]
+    ],
+    "rules": {
+      "no-restricted-imports": 0
+    }
   },
   "eslintIgnore": [
     "node_modules/",
