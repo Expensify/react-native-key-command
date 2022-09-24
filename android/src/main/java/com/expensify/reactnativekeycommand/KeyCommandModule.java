@@ -26,7 +26,7 @@ public class KeyCommandModule extends ReactContextBaseJavaModule {
     private DeviceEventManagerModule.RCTDeviceEventEmitter mJSModule = null;
     private static KeyCommandModule instance = null;
 
-    public static final String NAME = "Keycommandlib";
+    public static final String NAME = "KeyCommand";
 
     private static final Set<String> commandsArray = new HashSet<String>();
 
@@ -115,12 +115,12 @@ public class KeyCommandModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void registerKeyCommand(ReadableArray json, Promise promise) {
+    public void registerKeyCommands(ReadableArray json, Promise promise) {
         promise.resolve(null);
     }
 
     @ReactMethod
-    public void unregisterKeyCommand(ReadableArray json, Promise promise) {
+    public void unregisterKeyCommands(ReadableArray json, Promise promise) {
         promise.resolve(null);
     }
 }
