@@ -110,7 +110,18 @@ public class KeyCommandModule extends ReactContextBaseJavaModule {
     @Override
     public Map<String, Object> getConstants() {
         final Map<String, Object> constants = new HashMap<>();
-        constants.put("DEFAULT_EVENT_NAME", "New Event");
+
+        constants.put("keyModifierShift", KeyEvent.META_SHIFT_MASK);
+        constants.put("keyModifierControl", KeyEvent.META_CTRL_MASK);
+        constants.put("keyModifierAlternate", KeyEvent.META_ALT_MASK);
+        constants.put("keyModifierCommand", KeyEvent.META_CTRL_MASK);
+        constants.put("keyModifierNumericPad", KeyEvent.KEYCODE_NUM);
+        constants.put("keyInputUpArrow", KeyEvent.KEYCODE_DPAD_UP);
+        constants.put("keyInputDownArrow", KeyEvent.KEYCODE_DPAD_DOWN);
+        constants.put("keyInputLeftArrow", KeyEvent.KEYCODE_DPAD_LEFT);
+        constants.put("keyInputRightArrow", KeyEvent.KEYCODE_DPAD_RIGHT);
+        constants.put("keyInputEscape", KeyEvent.KEYCODE_ESCAPE);
+
         return constants;
     }
 
