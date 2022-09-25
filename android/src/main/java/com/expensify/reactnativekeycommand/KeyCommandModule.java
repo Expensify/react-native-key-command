@@ -55,28 +55,6 @@ public class KeyCommandModule extends ReactContextBaseJavaModule {
         mJSModule.emit("onKeyCommand", getJsEventParams(keyCode, keyEvent, null));
     };
 
-    public void onKeyUpEvent(int keyCode, KeyEvent keyEvent) {
-        if (!reactContext.hasActiveCatalystInstance()) {
-            return;
-        }
-
-        if (mJSModule == null) {
-            mJSModule = reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class);
-        }
-        mJSModule.emit("onKeyCommand", getJsEventParams(keyCode, keyEvent, null));
-    };
-
-    public void onKeyMultipleEvent(int keyCode, int repeatCount, KeyEvent keyEvent) {
-        if (!reactContext.hasActiveCatalystInstance()) {
-            return;
-        }
-
-        if (mJSModule == null) {
-            mJSModule = reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class);
-        }
-        mJSModule.emit("onKeyCommand", getJsEventParams(keyCode, keyEvent, repeatCount));
-    };
-
     private WritableMap getJsEventParams(int keyCode, KeyEvent keyEvent, Integer repeatCount) {
         WritableMap params = new WritableNativeMap();
         int action = keyEvent.getAction();
@@ -93,8 +71,7 @@ public class KeyCommandModule extends ReactContextBaseJavaModule {
             params.putInt("repeatcount", repeatCount);
         }
 
-        params.putInt("keyCode", keyCode);
-        params.putInt("action", action);
+        params.putInt("modifierFlags", keyEvent.getModifiers());
         params.putString("input", String.valueOf(pressedKey));
 
         return params;
