@@ -28,7 +28,7 @@ public class KeyCommandModule extends ReactContextBaseJavaModule {
 
     public static final String NAME = "KeyCommand";
 
-    private static final Set<String> commandsArray = new HashSet<String>();
+    private static final Set<Set<Object>> commandsArray = new HashSet<Set<Object>>();
 
     public KeyCommandModule(ReactApplicationContext reactContext) {
         super(reactContext);
@@ -52,7 +52,16 @@ public class KeyCommandModule extends ReactContextBaseJavaModule {
         if (mJSModule == null) {
             mJSModule = reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class);
         }
-        mJSModule.emit("onKeyCommand", getJsEventParams(keyCode, keyEvent, null));
+
+        WritableMap params = getJsEventParams(keyCode, keyEvent, null);
+        
+        Set<Object> command = new HashSet<Object>();
+        command.add(params.getString("input"));
+        command.add(params.getInt("modifierFlags"));
+
+        if (commandsArray.contains(command)) {
+            mJSModule.emit("onKeyCommand", params);
+        }
     };
 
     private WritableMap getJsEventParams(int keyCode, KeyEvent keyEvent, Integer repeatCount) {
@@ -60,7 +69,7 @@ public class KeyCommandModule extends ReactContextBaseJavaModule {
         int action = keyEvent.getAction();
         char pressedKey = (char) keyEvent.getUnicodeChar();
 
-        params.putString("input", String.valueOf(keyEvent.getDisplayLabel()));
+        params.putString("input", String.valueOf(keyEvent.getDisplayLabel()).toLowerCase());
 
         if (keyEvent.isCtrlPressed()) {
             params.putInt("modifierFlags", KeyEvent.META_CTRL_MASK);
@@ -104,6 +113,13 @@ public class KeyCommandModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void registerKeyCommands(ReadableArray json, Promise promise) {
+        for (int ii = 0; ii < json.size(); ii++) {
+            Set<Object> command = new HashSet<Object>();
+            command.add(json.getMap(ii).getString("input"));
+            command.add(json.getMap(ii).getInt("modifierFlags"));
+            commandsArray.add(command);
+        }
+
         promise.resolve(null);
     }
 
