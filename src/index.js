@@ -73,13 +73,17 @@ const eventEmitter = getEventEmitter();
 function addListener(keyCommand, callback) {
     registerKeyCommands([keyCommand]);
     const event = eventEmitter.addListener('onKeyCommand', (response) => {
-        if (!response.input.length) {
-            return;
-        }
-        if (response.input !== keyCommand.input || response.modifierFlags !== keyCommand.modifierFlags) {
+        if (!response.input || !response.input.length) {
             return;
         }
 
+        /**
+         * Normalizing input to lowercase, android will return returns keyEvent.getDisplayLabel
+         * which is the label that is physically printed on the keyboard.
+         */
+        if (response.input.toLowerCase() !== keyCommand.input.toLowerCase() || response.modifierFlags !== keyCommand.modifierFlags) {
+            return;
+        }
         callback(response);
     });
 

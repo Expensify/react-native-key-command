@@ -60,19 +60,19 @@ public class KeyCommandModule extends ReactContextBaseJavaModule {
         int action = keyEvent.getAction();
         char pressedKey = (char) keyEvent.getUnicodeChar();
 
-        if (keyEvent.getAction() == KeyEvent.ACTION_MULTIPLE && keyCode == KeyEvent.KEYCODE_UNKNOWN) {
-            String chars = keyEvent.getCharacters();
-            if (chars != null) {
-                params.putString("characters", chars);
-            }
-        }
+        params.putString("input", String.valueOf(keyEvent.getDisplayLabel()));
 
-        if (repeatCount != null) {
-            params.putInt("repeatcount", repeatCount);
+        if (keyEvent.isCtrlPressed()) {
+            params.putInt("modifierFlags", KeyEvent.META_CTRL_MASK);
         }
-
-        params.putInt("modifierFlags", keyEvent.getModifiers());
-        params.putString("input", String.valueOf(pressedKey));
+        else if (keyEvent.isAltPressed()) {
+            params.putInt("modifierFlags", KeyEvent.META_ALT_MASK);
+        }
+        else if (keyEvent.isShiftPressed()) {
+            params.putInt("modifierFlags", KeyEvent.META_SHIFT_MASK);
+        } else {
+            params.putInt("modifierFlags", keyEvent.getModifiers());
+        }
 
         return params;
     }
