@@ -125,6 +125,13 @@ public class KeyCommandModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void unregisterKeyCommands(ReadableArray json, Promise promise) {
+        for (int ii = 0; ii < json.size(); ii++) {
+            Set<Object> command = new HashSet<Object>();
+            command.add(json.getMap(ii).getString("input"));
+            command.add(json.getMap(ii).getInt("modifierFlags"));
+            commandsArray.remove(command);
+        }
+
         promise.resolve(null);
     }
 }
