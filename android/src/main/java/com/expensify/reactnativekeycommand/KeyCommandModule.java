@@ -35,7 +35,7 @@ public class KeyCommandModule extends ReactContextBaseJavaModule {
         this.reactContext = reactContext;
     }
 
-    public static KeyCommandModule initKeyCommandModule(ReactApplicationContext reactContext) {
+    public static KeyCommandModule init(ReactApplicationContext reactContext) {
         instance = new KeyCommandModule(reactContext);
         return instance;
     }
@@ -134,4 +134,10 @@ public class KeyCommandModule extends ReactContextBaseJavaModule {
 
         promise.resolve(null);
     }
+
+    @ReactMethod
+    public void addListener(String eventName) {}
+
+    @ReactMethod
+    public void removeListeners(Integer count) {}
 }
