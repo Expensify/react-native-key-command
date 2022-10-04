@@ -77,11 +77,7 @@ function addListener(keyCommand, callback) {
             return;
         }
 
-        /**
-         * Normalizing input to lowercase, android will return returns keyEvent.getDisplayLabel
-         * which is the label that is physically printed on the keyboard.
-         */
-        if (response.input.toLowerCase() !== keyCommand.input.toLowerCase() || response.modifierFlags !== keyCommand.modifierFlags) {
+        if (response.input !== keyCommand.input || response.modifierFlags !== keyCommand.modifierFlags) {
             return;
         }
         callback(response);
