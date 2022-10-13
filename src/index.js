@@ -73,10 +73,6 @@ const eventEmitter = getEventEmitter();
 function addListener(keyCommand, callback) {
     registerKeyCommands([keyCommand]);
     const event = eventEmitter.addListener('onKeyCommand', (response) => {
-        if (!response.input || !response.input.length) {
-            return;
-        }
-
         if (response.input !== keyCommand.input || response.modifierFlags !== keyCommand.modifierFlags) {
             return;
         }
