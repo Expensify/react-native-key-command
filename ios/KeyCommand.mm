@@ -57,6 +57,10 @@ RCT_NOT_IMPLEMENTED(-(instancetype)init)
 
 - (BOOL)matchesInput:(NSString *)input flags:(UIKeyModifierFlags)flags
 {
+  if (![_key length] && [input length] && _flags == flags) {
+    return true;
+  }
+  
   return [_key isEqual:[input lowercaseString]] && _flags == flags;
 }
 
@@ -145,7 +149,8 @@ RCT_NOT_IMPLEMENTED(-(instancetype)init)
 
   BOOL interactionEnabled = !UIApplication.sharedApplication.isIgnoringInteractionEvents;
   BOOL hasFirstResponder = NO;
-  if (isKeyDown && modifiedInput.length > 0 && interactionEnabled) {
+  
+  if (isKeyDown && interactionEnabled) {
     UIResponder *firstResponder = nil;
     for (UIWindow *window in [self allWindows]) {
       firstResponder = [window valueForKey:@"firstResponder"];
