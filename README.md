@@ -6,6 +6,31 @@ react-native-key-command
 npm install react-native-key-command
 ```
 
+## iOS
+
+`cd ios && pod install`
+
+## Android
+
+Changes required in your `MainActivity.java`
+
+```
+// add library imports in the top of your file 
+import android.view.KeyEvent;
+import com.expensify.reactnativekeycommand.KeyCommandModule;
+
+public class MainActivity extends ReactActivity {
+
+  ..
+
+  // Add a new onKeyDown method in MainActivity class
+  @Override
+  public boolean onKeyDown(int keyCode, KeyEvent event) {
+    KeyCommandModule.getInstance().onKeyDownEvent(keyCode, event);
+    return super.onKeyDown(keyCode, event);
+  }
+```
+
 ## Usage
 ```js
 import * as KeyCommand from 'react-native-key-command';
