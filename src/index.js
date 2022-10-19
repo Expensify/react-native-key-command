@@ -73,7 +73,14 @@ const eventEmitter = getEventEmitter();
 function addListener(keyCommand, callback) {
     registerKeyCommands([keyCommand]);
     const event = eventEmitter.addListener('onKeyCommand', (response) => {
-        if (response.input !== keyCommand.input || response.modifierFlags !== keyCommand.modifierFlags) {
+        /**
+         * Native string representation may appear visibly empty but contain special characters
+         * such as \u0000. Therefore comparing by unicode value.
+         */
+        const isInputMatched = (response.input.charCodeAt(0) || 0) === (keyCommand.input.charCodeAt(0) || 0);
+        const isCommandMatched = response.modifierFlags === keyCommand.modifierFlags;
+
+        if (!isInputMatched || !isCommandMatched) {
             return;
         }
         callback(response);

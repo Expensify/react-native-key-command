@@ -34,9 +34,14 @@ export default function App() {
         return KeyCommand.addListener(SEARCH_COMMAND, handleSearchCommandPress);
     }, []);
 
+    React.useEffect(() => {
+        const SEARCH_COMMAND = {input: '', modifierFlags: KeyCommand.constants.keyInputEscape};
+        return KeyCommand.addListener(SEARCH_COMMAND, handleSearchCommandPress);
+    }, []);
+
     return (
         <SafeAreaView style={styles.container}>
-            <Text style={styles.title}>Press [CMD + F] to trigger keycommand events</Text>
+            <Text style={styles.title}>Press [CMD + F] or [ESC] to trigger keycommand events</Text>
 
             <ScrollView style={styles.scroll}>
                 {_.map(history, (response, index) => (
