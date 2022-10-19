@@ -59,10 +59,14 @@ public class KeyCommandModule extends ReactContextBaseJavaModule {
         command.add(params.getString("input"));
         command.add(params.getInt("modifierFlags"));
 
-        if (commandsArray.contains(command)) {
+        if (matchesInput(command)) {
             mJSModule.emit("onKeyCommand", params);
         }
     };
+
+    private boolean matchesInput(Set command) {
+        return commandsArray.contains(command);
+    }
 
     private WritableMap getJsEventParams(int keyCode, KeyEvent keyEvent, Integer repeatCount) {
         WritableMap params = new WritableNativeMap();
@@ -80,7 +84,7 @@ public class KeyCommandModule extends ReactContextBaseJavaModule {
         else if (keyEvent.isShiftPressed()) {
             params.putInt("modifierFlags", KeyEvent.META_SHIFT_MASK);
         } else {
-            params.putInt("modifierFlags", keyEvent.getModifiers());
+            params.putInt("modifierFlags", keyEvent.getKeyCode());
         }
 
         return params;
