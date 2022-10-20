@@ -5,6 +5,27 @@
 #import "RCTDefines.h"
 #import "RCTUtils.h"
 
+NSDictionary *ModifierFlagsConstants = @{
+  @"keyModifierCapsLock": @(UIKeyModifierAlphaShift),
+  @"keyModifierShift": @(UIKeyModifierShift),
+  @"keyModifierControl": @(UIKeyModifierControl),
+  @"keyModifierOption": @(UIKeyModifierAlternate),
+  @"keyModifierCommand": @(UIKeyModifierCommand),
+
+  @"keyModifierControlOption": @(UIKeyModifierControl | UIKeyModifierAlternate),
+  @"keyModifierControlOptionCommand": @(UIKeyModifierControl | UIKeyModifierAlternate | UIKeyModifierCommand),
+  @"keyModifierControlCommand": @(UIKeyModifierControl | UIKeyModifierCommand),
+  @"keyModifierOptionCommand": @(UIKeyModifierAlternate | UIKeyModifierCommand),
+  @"keyModifierShiftCommand": @(UIKeyModifierShift | UIKeyModifierCommand),
+
+  @"keyModifierNumericPad": @78,
+  @"keyInputUpArrow": @19,
+  @"keyInputDownArrow": @20,
+  @"keyInputLeftArrow": @21,
+  @"keyInputRightArrow": @22,
+  @"keyInputEscape": @111,
+};
+
 @interface UIEvent (UIPhysicalKeyboardEvent)
 
 @property (nonatomic) NSString *_modifiedInput;
@@ -57,7 +78,35 @@ RCT_NOT_IMPLEMENTED(-(instancetype)init)
 
 - (BOOL)matchesInput:(NSString *)input flags:(UIKeyModifierFlags)flags
 {
-  if (![_key length] && [input length] && _flags == flags) {
+  if (
+    ![_key length] &&
+    [input isEqualToString:@"UIKeyInputEscape"] &&
+    _flags == [[ModifierFlagsConstants valueForKey:@"keyInputEscape"] integerValue]
+  ) {
+    return true;
+  }
+  
+  if (
+    ![_key length] &&
+    [input isEqualToString:@"UIKeyInputUpArrow"] &&
+    _flags == [[ModifierFlagsConstants valueForKey:@"keyInputUpArrow"] integerValue]
+  ) {
+    return true;
+  }
+  
+  if (
+    ![_key length] &&
+    [input isEqualToString:@"UIKeyInputLeftArrow"] &&
+    _flags == [[ModifierFlagsConstants valueForKey:@"keyInputLeftArrow"] integerValue]
+  ) {
+    return true;
+  }
+  
+  if (
+    ![_key length] &&
+    [input isEqualToString:@"UIKeyInputRightArrow"] &&
+    _flags == [[ModifierFlagsConstants valueForKey:@"keyInputRightArrow"] integerValue]
+  ) {
     return true;
   }
   
@@ -262,26 +311,7 @@ RCT_EXPORT_MODULE()
 }
 
 - (NSDictionary *)constantsToExport {
-    return @{
-         @"keyModifierCapsLock": @(UIKeyModifierAlphaShift),
-         @"keyModifierShift": @(UIKeyModifierShift),
-         @"keyModifierControl": @(UIKeyModifierControl),
-         @"keyModifierOption": @(UIKeyModifierAlternate),
-         @"keyModifierCommand": @(UIKeyModifierCommand),
-
-         @"keyModifierControlOption": @(UIKeyModifierControl | UIKeyModifierAlternate),
-         @"keyModifierControlOptionCommand": @(UIKeyModifierControl | UIKeyModifierAlternate | UIKeyModifierCommand),
-         @"keyModifierControlCommand": @(UIKeyModifierControl | UIKeyModifierCommand),
-         @"keyModifierOptionCommand": @(UIKeyModifierAlternate | UIKeyModifierCommand),
-         @"keyModifierShiftCommand": @(UIKeyModifierShift | UIKeyModifierCommand),
-
-         @"keyModifierNumericPad": @(UIKeyModifierNumericPad),
-         @"keyInputUpArrow": UIKeyInputUpArrow,
-         @"keyInputDownArrow": UIKeyInputDownArrow,
-         @"keyInputLeftArrow": UIKeyInputLeftArrow,
-         @"keyInputRightArrow": UIKeyInputRightArrow,
-         @"keyInputEscape": UIKeyInputEscape
-    };
+    return ModifierFlagsConstants;
 }
 
 RCT_REMAP_METHOD(registerKeyCommands,
@@ -306,8 +336,8 @@ RCT_REMAP_METHOD(registerKeyCommands,
             modifierFlags:[flags integerValue]
             action:^(__unused UIKeyCommand *command) {
               [self sendEventWithName:@"onKeyCommand" body:@{
-                   @"input": [command.input lowercaseString],
-                   @"modifierFlags": [NSNumber numberWithInteger:command.modifierFlags]
+                   @"input": [input lowercaseString],
+                   @"modifierFlags": flags
               }];
             }];
       });
