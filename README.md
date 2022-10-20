@@ -37,10 +37,45 @@ import * as KeyCommand from 'react-native-key-command';
 
 // ...
 
+/**
+ * [CMD + F] combination listener
+ */
 React.useEffect(() => {
     const SEARCH_COMMAND = {input: 'f', modifierFlags: KeyCommand.constants.keyModifierCommand};
     return KeyCommand.addListener(SEARCH_COMMAND, console.log);
 }, []);
+
+/**
+ * [Esc] key listener
+ */
+React.useEffect(() => {
+    const ESCAPE_COMMAND = {input: '', modifierFlags: KeyCommand.constants.keyInputEscape};
+    return KeyCommand.addListener(ESCAPE_COMMAND, console.log);
+}, []);
+```
+
+## Constants
+List of available modifier flags. Values on Android may vary.
+
+```js
+KeyCommand.constants = {
+  "keyInputDownArrow": 20,
+  "keyInputEscape": 111,
+  "keyInputLeftArrow": 21,
+  "keyInputRightArrow": 22,
+  "keyInputUpArrow": 19,
+  "keyModifierCapsLock": 65536,
+  "keyModifierCommand": 1048576,
+  "keyModifierControl": 262144,
+  "keyModifierControlCommand": 1310720,
+  "keyModifierControlOption": 786432,
+  "keyModifierControlOptionCommand": 1835008,
+  "keyModifierNumericPad": 78,
+  "keyModifierOption": 524288,
+  "keyModifierOptionCommand": 1572864,
+  "keyModifierShift": 131072,
+  "keyModifierShiftCommand": 1179648
+}
 ```
 
 Imperative API provides you with granular control over the library, e.g:
