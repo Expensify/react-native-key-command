@@ -16,6 +16,27 @@ const KeyCommand = NativeModules.KeyCommand ? NativeModules.KeyCommand : new Pro
     },
 );
 
+function validateKeyCommand(keyCommand) {
+    if (keyCommand.input && typeof keyCommand.input !== 'string') {
+        // eslint-disable-next-line
+        console.error('input property for keyCommand object must be a string. skipping.');
+        return;
+    }
+
+    if (!keyCommand.modifierFlags || !Number.isInteger(keyCommand.modifierFlags)) {
+        // eslint-disable-next-line
+        console.error('modifierFlags property for keyCommand object must be an integer. skipping.');
+        return;
+    }
+
+    // assigning empty input for single commands e.g. Esc
+    if (!keyCommand.input) {
+        return {...keyCommand, input: ''};
+    }
+
+    return keyCommand;
+}
+
 /**
  * Validates key command combination list.
  *
@@ -25,27 +46,7 @@ const KeyCommand = NativeModules.KeyCommand ? NativeModules.KeyCommand : new Pro
  * @returns {Promise}
  */
 function validateKeyCommands(keyCommands) {
-    const validatedKeyCommands = _.map(keyCommands, (keyCommand) => {
-        if (keyCommand.input && typeof keyCommand.input !== 'string') {
-            // eslint-disable-next-line
-            console.error('input property for keyCommand object must be a string. skipping.');
-            return;
-        }
-
-        if (!keyCommand.modifierFlags || !Number.isInteger(keyCommand.modifierFlags)) {
-            // eslint-disable-next-line
-            console.error('modifierFlags property for keyCommand object must be an integer. skipping.');
-            return;
-        }
-
-        // assigning empty input for single commands e.g. Esc
-        if (!keyCommand.input) {
-            return {...keyCommand, input: ''};
-        }
-
-        return keyCommand;
-    });
-
+    const validatedKeyCommands = _.map(keyCommands, validateKeyCommand);
     const filteredKeyCommands = _.filter(validatedKeyCommands, item => item);
 
     if (!filteredKeyCommands.length) {
@@ -113,14 +114,16 @@ const eventEmitter = getEventEmitter();
  * @returns {Function} callback to remove the subscription.
  */
 function addListener(keyCommand, callback) {
-    registerKeyCommands([keyCommand]);
+    const validatedKeyCommand = validateKeyCommand(keyCommand);
+    registerKeyCommands([validatedKeyCommand]);
+
     const event = eventEmitter.addListener('onKeyCommand', (response) => {
         /**
          * Native string representation may appear visibly empty but contain special characters
          * such as \u0000. Therefore comparing by unicode value.
          */
-        const isInputMatched = (response.input.charCodeAt(0) || 0) === (keyCommand.input.charCodeAt(0) || 0);
-        const isCommandMatched = response.modifierFlags === keyCommand.modifierFlags;
+        const isInputMatched = (response.input.charCodeAt(0) || 0) === (validatedKeyCommand.input.charCodeAt(0) || 0);
+        const isCommandMatched = response.modifierFlags === validatedKeyCommand.modifierFlags;
 
         if (!isInputMatched || !isCommandMatched) {
             return;
