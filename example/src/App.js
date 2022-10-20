@@ -35,7 +35,7 @@ export default function App() {
     }, []);
 
     React.useEffect(() => {
-        const SEARCH_COMMAND = {input: '', modifierFlags: KeyCommand.constants.keyInputEscape};
+        const SEARCH_COMMAND = {modifierFlags: KeyCommand.constants.keyInputEscape};
         return KeyCommand.addListener(SEARCH_COMMAND, handleSearchCommandPress);
     }, []);
 

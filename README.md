@@ -49,7 +49,7 @@ React.useEffect(() => {
  * [Esc] key listener
  */
 React.useEffect(() => {
-    const ESCAPE_COMMAND = {input: '', modifierFlags: KeyCommand.constants.keyInputEscape};
+    const ESCAPE_COMMAND = {modifierFlags: KeyCommand.constants.keyInputEscape};
     return KeyCommand.addListener(ESCAPE_COMMAND, console.log);
 }, []);
 ```

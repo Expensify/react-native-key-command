@@ -1,4 +1,5 @@
 import {NativeModules, NativeEventEmitter, Platform} from 'react-native';
+import _ from 'underscore';
 
 const PLATFORM_ERROR_MESSAGE = Platform.select({ios: "- You have run 'pod install'\n", default: ''});
 const LINKING_ERROR = `The package 'react-native-key-command' doesn't seem to be linked. Make sure: \n\n
@@ -14,6 +15,45 @@ const KeyCommand = NativeModules.KeyCommand ? NativeModules.KeyCommand : new Pro
         },
     },
 );
+
+/**
+ * Validates key command combination list.
+ *
+ * @param {Object[]} keyCommands - List of key command objects.
+ * @param {string} keyCommands[].input - any character key from the keyboard.
+ * @param {number} keyCommands[].modifierFlags - predefined command from getConstants enum.
+ * @returns {Promise}
+ */
+function validateKeyCommands(keyCommands) {
+    const validatedKeyCommands = _.map(keyCommands, (keyCommand) => {
+        if (keyCommand.input && typeof keyCommand.input !== 'string') {
+            // eslint-disable-next-line
+            console.error('input property for keyCommand object must be a string. skipping.');
+            return;
+        }
+
+        if (!keyCommand.modifierFlags || !Number.isInteger(keyCommand.modifierFlags)) {
+            // eslint-disable-next-line
+            console.error('modifierFlags property for keyCommand object must be an integer. skipping.');
+            return;
+        }
+
+        // assigning empty input for single commands e.g. Esc
+        if (!keyCommand.input) {
+            return {...keyCommand, input: ''};
+        }
+
+        return keyCommand;
+    });
+
+    const filteredKeyCommands = _.filter(validatedKeyCommands, item => item);
+
+    if (!filteredKeyCommands.length) {
+        console.error('keyCommands array must not be empty.');
+    }
+
+    return filteredKeyCommands;
+}
 
 /**
  * Predefined multiplatform commands list.
@@ -33,7 +73,8 @@ function getConstants() {
  * @returns {Promise}
  */
 function registerKeyCommands(keyCommands) {
-    return KeyCommand.registerKeyCommands(keyCommands);
+    const validatedKeyCommands = validateKeyCommands(keyCommands);
+    return KeyCommand.registerKeyCommands(validatedKeyCommands);
 }
 
 /**
@@ -45,7 +86,8 @@ function registerKeyCommands(keyCommands) {
  * @returns {Promise}
  */
 function unregisterKeyCommands(keyCommands) {
-    return KeyCommand.unregisterKeyCommands(keyCommands);
+    const validatedKeyCommands = validateKeyCommands(keyCommands);
+    return KeyCommand.unregisterKeyCommands(validatedKeyCommands);
 }
 
 /**
