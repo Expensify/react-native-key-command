@@ -117,11 +117,7 @@ function addListener(keyCommand, callback) {
     registerKeyCommands([validatedKeyCommand]);
 
     const event = eventEmitter.addListener('onKeyCommand', (response) => {
-        /**
-         * Native string representation may appear visibly empty but contain special characters
-         * such as \u0000. Therefore comparing by unicode value.
-         */
-        const isInputMatched = (response.input.charCodeAt(0) || 0) === (validatedKeyCommand.input.charCodeAt(0) || 0);
+        const isInputMatched = (response.input.toLowerCase()) === (validatedKeyCommand.input.toLowerCase());
         const isCommandMatched = (response.modifierFlags || 0) === (validatedKeyCommand.modifierFlags || 0);
 
         if (!validatedKeyCommand.modifierFlags && isInputMatched) {

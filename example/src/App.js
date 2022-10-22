@@ -7,21 +7,25 @@ import _ from 'underscore';
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: '#fff',
+        backgroundColor: '#1e3799',
         flex: 1,
     },
     header: {
-        backgroundColor: '#1e3799',
         padding: 12,
     },
     title: {
         fontSize: 16,
         color: '#fff',
+        marginBottom: 6,
     },
     scroll: {
+        backgroundColor: '#fff',
         padding: 12,
         borderTopWidth: 1,
         borderTopColor: '#333',
+    },
+    item: {
+        marginBottom: 6,
     },
 });
 
@@ -33,18 +37,18 @@ export default function App() {
     }, []);
 
     React.useEffect(() => {
-        const SEARCH_COMMAND = {input: 'f', modifierFlags: KeyCommand.constants.keyModifierShift};
-        return KeyCommand.addListener(SEARCH_COMMAND, handleSearchCommandPress);
+        const SEARCH_COMMAND = {input: 'f', modifierFlags: KeyCommand.constants.keyModifierCommand};
+        return KeyCommand.addListener(SEARCH_COMMAND, () => handleSearchCommandPress('[CMD + F] pressed'));
     }, []);
 
     React.useEffect(() => {
         const SEARCH_COMMAND = {input: KeyCommand.constants.keyInputEscape};
-        return KeyCommand.addListener(SEARCH_COMMAND, handleSearchCommandPress);
+        return KeyCommand.addListener(SEARCH_COMMAND, () => handleSearchCommandPress('[Esc] pressed'));
     }, []);
 
     React.useEffect(() => {
         const SEARCH_COMMAND = {input: 'g'};
-        return KeyCommand.addListener(SEARCH_COMMAND, handleSearchCommandPress);
+        return KeyCommand.addListener(SEARCH_COMMAND, () => handleSearchCommandPress('[G] pressed'));
     }, []);
 
     return (
@@ -58,7 +62,7 @@ export default function App() {
 
             <ScrollView style={styles.scroll}>
                 {_.map(history, (response, index) => (
-                    <Text key={index}>{JSON.stringify(response, null, 2)}</Text>
+                    <Text key={index} style={styles.item}>{response}</Text>
                 ))}
             </ScrollView>
         </SafeAreaView>

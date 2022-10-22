@@ -17,13 +17,13 @@ NSDictionary *ModifierFlagsConstants = @{
   @"keyModifierControlCommand": @(UIKeyModifierControl | UIKeyModifierCommand),
   @"keyModifierOptionCommand": @(UIKeyModifierAlternate | UIKeyModifierCommand),
   @"keyModifierShiftCommand": @(UIKeyModifierShift | UIKeyModifierCommand),
-
-  @"keyModifierNumericPad": @78,
-  @"keyInputUpArrow": @19,
-  @"keyInputDownArrow": @20,
-  @"keyInputLeftArrow": @21,
-  @"keyInputRightArrow": @22,
-  @"keyInputEscape": @111,
+  @"keyModifierNumericPad": @(UIKeyModifierNumericPad),
+  
+  @"keyInputUpArrow": UIKeyInputUpArrow,
+  @"keyInputDownArrow": UIKeyInputDownArrow,
+  @"keyInputLeftArrow": UIKeyInputLeftArrow,
+  @"keyInputRightArrow": UIKeyInputRightArrow,
+  @"keyInputEscape": UIKeyInputEscape
 };
 
 @interface UIEvent (UIPhysicalKeyboardEvent)
@@ -79,33 +79,29 @@ RCT_NOT_IMPLEMENTED(-(instancetype)init)
 - (BOOL)matchesInput:(NSString *)input flags:(UIKeyModifierFlags)flags
 {
   if (
-    ![_key length] &&
-    [input isEqualToString:@"UIKeyInputEscape"] &&
-    _flags == [[ModifierFlagsConstants valueForKey:@"keyInputEscape"] integerValue]
+    [input isEqualToString:UIKeyInputEscape] &&
+    [_key isEqualToString:UIKeyInputEscape]
   ) {
     return true;
   }
   
   if (
-    ![_key length] &&
-    [input isEqualToString:@"UIKeyInputUpArrow"] &&
-    _flags == [[ModifierFlagsConstants valueForKey:@"keyInputUpArrow"] integerValue]
+    [input isEqualToString:UIKeyInputUpArrow] &&
+    [_key isEqualToString:UIKeyInputUpArrow]
   ) {
     return true;
   }
   
   if (
-    ![_key length] &&
-    [input isEqualToString:@"UIKeyInputLeftArrow"] &&
-    _flags == [[ModifierFlagsConstants valueForKey:@"keyInputLeftArrow"] integerValue]
+    [input isEqualToString:UIKeyInputLeftArrow] &&
+    [_key isEqualToString:UIKeyInputLeftArrow]
   ) {
     return true;
   }
   
   if (
-    ![_key length] &&
-    [input isEqualToString:@"UIKeyInputRightArrow"] &&
-    _flags == [[ModifierFlagsConstants valueForKey:@"keyInputRightArrow"] integerValue]
+    [input isEqualToString:UIKeyInputRightArrow] &&
+    [_key isEqualToString:UIKeyInputRightArrow]
   ) {
     return true;
   }
@@ -336,8 +332,8 @@ RCT_REMAP_METHOD(registerKeyCommands,
             modifierFlags:[flags integerValue]
             action:^(__unused UIKeyCommand *command) {
               [self sendEventWithName:@"onKeyCommand" body:@{
-                   @"input": [input lowercaseString],
-                   @"modifierFlags": flags
+                 @"input": [command.input lowercaseString],
+                 @"modifierFlags": [NSNumber numberWithInteger:command.modifierFlags]
               }];
             }];
       });
