@@ -17,21 +17,20 @@ const KeyCommand = NativeModules.KeyCommand ? NativeModules.KeyCommand : new Pro
 );
 
 function validateKeyCommand(keyCommand) {
-    if (keyCommand.input && typeof keyCommand.input !== 'string') {
-        // eslint-disable-next-line
-        console.error('input property for keyCommand object must be a string. skipping.');
-        return;
-    }
-
-    if (!keyCommand.modifierFlags || !Number.isInteger(keyCommand.modifierFlags)) {
-        // eslint-disable-next-line
-        console.error('modifierFlags property for keyCommand object must be an integer. skipping.');
-        return;
-    }
-
-    // assigning empty input for single commands e.g. Esc
+    /**
+     * command object may have following schema:
+     * - {input: 'f', modifierFlags: 123}
+     * - {input: 'f'}
+     * - {input: '123'}
+     */
     if (!keyCommand.input) {
-        return {...keyCommand, input: ''};
+        // eslint-disable-next-line
+        console.error('input property for keyCommand object must be an provided. skipping.');
+        return;
+    }
+
+    if (keyCommand.input && typeof keyCommand.input !== 'string') {
+        return {...keyCommand, input: `${keyCommand.input}`};
     }
 
     return keyCommand;
@@ -123,12 +122,15 @@ function addListener(keyCommand, callback) {
          * such as \u0000. Therefore comparing by unicode value.
          */
         const isInputMatched = (response.input.charCodeAt(0) || 0) === (validatedKeyCommand.input.charCodeAt(0) || 0);
-        const isCommandMatched = response.modifierFlags === validatedKeyCommand.modifierFlags;
+        const isCommandMatched = (response.modifierFlags || 0) === (validatedKeyCommand.modifierFlags || 0);
 
-        if (!isInputMatched || !isCommandMatched) {
-            return;
+        if (!validatedKeyCommand.modifierFlags && isInputMatched) {
+            callback(response);
         }
-        callback(response);
+
+        if (validatedKeyCommand.modifierFlags && isInputMatched && isCommandMatched) {
+            callback(response);
+        }
     });
 
     return () => {

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {
-    SafeAreaView, StyleSheet, ScrollView, Text,
+    SafeAreaView, StyleSheet, ScrollView, Text, View,
 } from 'react-native';
 import * as KeyCommand from 'react-native-key-command';
 import _ from 'underscore';
@@ -10,10 +10,13 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         flex: 1,
     },
-    title: {
+    header: {
+        backgroundColor: '#1e3799',
         padding: 12,
+    },
+    title: {
         fontSize: 16,
-        fontWeight: '500',
+        color: '#fff',
     },
     scroll: {
         padding: 12,
@@ -30,18 +33,28 @@ export default function App() {
     }, []);
 
     React.useEffect(() => {
-        const SEARCH_COMMAND = {input: 'f', modifierFlags: KeyCommand.constants.keyModifierCommand};
+        const SEARCH_COMMAND = {input: 'f', modifierFlags: KeyCommand.constants.keyModifierShift};
         return KeyCommand.addListener(SEARCH_COMMAND, handleSearchCommandPress);
     }, []);
 
     React.useEffect(() => {
-        const SEARCH_COMMAND = {modifierFlags: KeyCommand.constants.keyInputEscape};
+        const SEARCH_COMMAND = {input: KeyCommand.constants.keyInputEscape};
+        return KeyCommand.addListener(SEARCH_COMMAND, handleSearchCommandPress);
+    }, []);
+
+    React.useEffect(() => {
+        const SEARCH_COMMAND = {input: 'g'};
         return KeyCommand.addListener(SEARCH_COMMAND, handleSearchCommandPress);
     }, []);
 
     return (
         <SafeAreaView style={styles.container}>
-            <Text style={styles.title}>Press [CMD + F] or [ESC] to trigger keycommand events</Text>
+            <View style={styles.header}>
+                <Text style={styles.title}>Registered key commands:</Text>
+                <Text style={styles.title}>1. [CMD + F]</Text>
+                <Text style={styles.title}>2. [G]</Text>
+                <Text style={styles.title}>3. [Esc]</Text>
+            </View>
 
             <ScrollView style={styles.scroll}>
                 {_.map(history, (response, index) => (
