@@ -37,18 +37,18 @@ export default function App() {
     }, []);
 
     React.useEffect(() => {
-        const SEARCH_COMMAND = {input: 'f', modifierFlags: KeyCommand.constants.keyModifierCommand};
-        return KeyCommand.addListener(SEARCH_COMMAND, () => handleSearchCommandPress('[CMD + F] pressed'));
+        const KEY_COMMAND = {input: 'f', modifierFlags: KeyCommand.constants.keyModifierCommand};
+        return KeyCommand.addListener(KEY_COMMAND, () => handleSearchCommandPress('[CMD + F] pressed'));
     }, []);
 
     React.useEffect(() => {
-        const SEARCH_COMMAND = {input: KeyCommand.constants.keyInputEscape};
-        return KeyCommand.addListener(SEARCH_COMMAND, () => handleSearchCommandPress('[Esc] pressed'));
+        const KEY_COMMAND = {input: KeyCommand.constants.keyInputEscape};
+        return KeyCommand.addListener(KEY_COMMAND, () => handleSearchCommandPress('[Esc] pressed'));
     }, []);
 
     React.useEffect(() => {
-        const SEARCH_COMMAND = {input: 'g'};
-        return KeyCommand.addListener(SEARCH_COMMAND, () => handleSearchCommandPress('[G] pressed'));
+        const KEY_COMMAND = {input: 'g'};
+        return KeyCommand.addListener(KEY_COMMAND, () => handleSearchCommandPress('[G] pressed'));
     }, []);
 
     return (
