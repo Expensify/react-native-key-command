@@ -77,7 +77,7 @@ public class KeyCommandModule extends ReactContextBaseJavaModule {
 
             if (hasModifier) {
                 boolean matchModifier = registeredCommand.getInt("modifierFlags") == command.getInt("modifierFlags");
-                if (hasModifier && matchInput && matchModifier) {
+                if (matchInput && matchModifier) {
                     return true;
                 }
             }
