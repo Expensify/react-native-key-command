@@ -24,9 +24,7 @@ function validateKeyCommand(keyCommand) {
      * - {input: '123'}
      */
     if (!keyCommand.input) {
-        // eslint-disable-next-line
-        console.error('input property for keyCommand object must be an provided. skipping.');
-        return;
+        throw new Error('Input property for keyCommand object must be provided.');
     }
 
     if (keyCommand.input && typeof keyCommand.input !== 'string') {
@@ -45,14 +43,12 @@ function validateKeyCommand(keyCommand) {
  * @returns {Promise}
  */
 function validateKeyCommands(keyCommands) {
-    const validatedKeyCommands = _.map(keyCommands, validateKeyCommand);
-    const filteredKeyCommands = _.filter(validatedKeyCommands, item => item);
-
-    if (!filteredKeyCommands.length) {
-        console.error('keyCommands array must not be empty.');
+    if (!keyCommands.length) {
+        throw new Error('KeyCommands array must not be empty.');
     }
 
-    return filteredKeyCommands;
+    const validatedKeyCommands = _.map(keyCommands, validateKeyCommand);
+    return validatedKeyCommands;
 }
 
 /**
