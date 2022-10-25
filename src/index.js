@@ -1,4 +1,5 @@
 import {NativeModules, NativeEventEmitter, Platform} from 'react-native';
+import _ from 'underscore';
 
 const PLATFORM_ERROR_MESSAGE = Platform.select({ios: "- You have run 'pod install'\n", default: ''});
 const LINKING_ERROR = `The package 'react-native-key-command' doesn't seem to be linked. Make sure: \n\n
@@ -14,6 +15,41 @@ const KeyCommand = NativeModules.KeyCommand ? NativeModules.KeyCommand : new Pro
         },
     },
 );
+
+function validateKeyCommand(keyCommand) {
+    /**
+     * command object may have following schema:
+     * - {input: 'f', modifierFlags: 123}
+     * - {input: 'f'}
+     * - {input: '123'}
+     */
+    if (!keyCommand || !keyCommand.input) {
+        throw new Error('Input property for keyCommand object must be provided.');
+    }
+
+    if (keyCommand.input && typeof keyCommand.input !== 'string') {
+        return {...keyCommand, input: `${keyCommand.input}`};
+    }
+
+    return keyCommand;
+}
+
+/**
+ * Validates key command combination list.
+ *
+ * @param {Object[]} keyCommands - List of key command objects.
+ * @param {string} keyCommands[].input - any character key from the keyboard.
+ * @param {number} keyCommands[].modifierFlags - predefined command from getConstants enum.
+ * @returns {Promise}
+ */
+function validateKeyCommands(keyCommands) {
+    if (!keyCommands.length) {
+        throw new Error('KeyCommands array must not be empty.');
+    }
+
+    const validatedKeyCommands = _.map(keyCommands, validateKeyCommand);
+    return validatedKeyCommands;
+}
 
 /**
  * Predefined multiplatform commands list.
@@ -33,7 +69,8 @@ function getConstants() {
  * @returns {Promise}
  */
 function registerKeyCommands(keyCommands) {
-    return KeyCommand.registerKeyCommands(keyCommands);
+    const validatedKeyCommands = validateKeyCommands(keyCommands);
+    return KeyCommand.registerKeyCommands(validatedKeyCommands);
 }
 
 /**
@@ -45,7 +82,8 @@ function registerKeyCommands(keyCommands) {
  * @returns {Promise}
  */
 function unregisterKeyCommands(keyCommands) {
-    return KeyCommand.unregisterKeyCommands(keyCommands);
+    const validatedKeyCommands = validateKeyCommands(keyCommands);
+    return KeyCommand.unregisterKeyCommands(validatedKeyCommands);
 }
 
 /**
@@ -71,16 +109,20 @@ const eventEmitter = getEventEmitter();
  * @returns {Function} callback to remove the subscription.
  */
 function addListener(keyCommand, callback) {
-    registerKeyCommands([keyCommand]);
+    const validatedKeyCommand = validateKeyCommand(keyCommand);
+    registerKeyCommands([validatedKeyCommand]);
+
     const event = eventEmitter.addListener('onKeyCommand', (response) => {
-        if (!response.input || !response.input.length) {
-            return;
+        const isInputMatched = (response.input.toLowerCase()) === (validatedKeyCommand.input.toLowerCase());
+        const isCommandMatched = (response.modifierFlags || 0) === (validatedKeyCommand.modifierFlags || 0);
+
+        if (!validatedKeyCommand.modifierFlags && isInputMatched) {
+            callback(response);
         }
 
-        if (response.input !== keyCommand.input || response.modifierFlags !== keyCommand.modifierFlags) {
-            return;
+        if (validatedKeyCommand.modifierFlags && isInputMatched && isCommandMatched) {
+            callback(response);
         }
-        callback(response);
     });
 
     return () => {

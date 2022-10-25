@@ -5,6 +5,27 @@
 #import "RCTDefines.h"
 #import "RCTUtils.h"
 
+NSDictionary *ModifierFlagsConstants = @{
+  @"keyModifierCapsLock": @(UIKeyModifierAlphaShift),
+  @"keyModifierShift": @(UIKeyModifierShift),
+  @"keyModifierControl": @(UIKeyModifierControl),
+  @"keyModifierOption": @(UIKeyModifierAlternate),
+  @"keyModifierCommand": @(UIKeyModifierCommand),
+
+  @"keyModifierControlOption": @(UIKeyModifierControl | UIKeyModifierAlternate),
+  @"keyModifierControlOptionCommand": @(UIKeyModifierControl | UIKeyModifierAlternate | UIKeyModifierCommand),
+  @"keyModifierControlCommand": @(UIKeyModifierControl | UIKeyModifierCommand),
+  @"keyModifierOptionCommand": @(UIKeyModifierAlternate | UIKeyModifierCommand),
+  @"keyModifierShiftCommand": @(UIKeyModifierShift | UIKeyModifierCommand),
+  @"keyModifierNumericPad": @(UIKeyModifierNumericPad),
+  
+  @"keyInputUpArrow": UIKeyInputUpArrow,
+  @"keyInputDownArrow": UIKeyInputDownArrow,
+  @"keyInputLeftArrow": UIKeyInputLeftArrow,
+  @"keyInputRightArrow": UIKeyInputRightArrow,
+  @"keyInputEscape": UIKeyInputEscape
+};
+
 @interface UIEvent (UIPhysicalKeyboardEvent)
 
 @property (nonatomic) NSString *_modifiedInput;
@@ -57,6 +78,34 @@ RCT_NOT_IMPLEMENTED(-(instancetype)init)
 
 - (BOOL)matchesInput:(NSString *)input flags:(UIKeyModifierFlags)flags
 {
+  if (
+    [input isEqualToString:UIKeyInputEscape] &&
+    [_key isEqualToString:UIKeyInputEscape]
+  ) {
+    return true;
+  }
+  
+  if (
+    [input isEqualToString:UIKeyInputUpArrow] &&
+    [_key isEqualToString:UIKeyInputUpArrow]
+  ) {
+    return true;
+  }
+  
+  if (
+    [input isEqualToString:UIKeyInputLeftArrow] &&
+    [_key isEqualToString:UIKeyInputLeftArrow]
+  ) {
+    return true;
+  }
+  
+  if (
+    [input isEqualToString:UIKeyInputRightArrow] &&
+    [_key isEqualToString:UIKeyInputRightArrow]
+  ) {
+    return true;
+  }
+  
   return [_key isEqual:[input lowercaseString]] && _flags == flags;
 }
 
@@ -145,7 +194,8 @@ RCT_NOT_IMPLEMENTED(-(instancetype)init)
 
   BOOL interactionEnabled = !UIApplication.sharedApplication.isIgnoringInteractionEvents;
   BOOL hasFirstResponder = NO;
-  if (isKeyDown && modifiedInput.length > 0 && interactionEnabled) {
+  
+  if (isKeyDown && interactionEnabled) {
     UIResponder *firstResponder = nil;
     for (UIWindow *window in [self allWindows]) {
       firstResponder = [window valueForKey:@"firstResponder"];
@@ -257,26 +307,7 @@ RCT_EXPORT_MODULE()
 }
 
 - (NSDictionary *)constantsToExport {
-    return @{
-         @"keyModifierCapsLock": @(UIKeyModifierAlphaShift),
-         @"keyModifierShift": @(UIKeyModifierShift),
-         @"keyModifierControl": @(UIKeyModifierControl),
-         @"keyModifierOption": @(UIKeyModifierAlternate),
-         @"keyModifierCommand": @(UIKeyModifierCommand),
-
-         @"keyModifierControlOption": @(UIKeyModifierControl | UIKeyModifierAlternate),
-         @"keyModifierControlOptionCommand": @(UIKeyModifierControl | UIKeyModifierAlternate | UIKeyModifierCommand),
-         @"keyModifierControlCommand": @(UIKeyModifierControl | UIKeyModifierCommand),
-         @"keyModifierOptionCommand": @(UIKeyModifierAlternate | UIKeyModifierCommand),
-         @"keyModifierShiftCommand": @(UIKeyModifierShift | UIKeyModifierCommand),
-
-         @"keyModifierNumericPad": @(UIKeyModifierNumericPad),
-         @"keyInputUpArrow": UIKeyInputUpArrow,
-         @"keyInputDownArrow": UIKeyInputDownArrow,
-         @"keyInputLeftArrow": UIKeyInputLeftArrow,
-         @"keyInputRightArrow": UIKeyInputRightArrow,
-         @"keyInputEscape": UIKeyInputEscape
-    };
+    return ModifierFlagsConstants;
 }
 
 RCT_REMAP_METHOD(registerKeyCommands,
@@ -301,8 +332,8 @@ RCT_REMAP_METHOD(registerKeyCommands,
             modifierFlags:[flags integerValue]
             action:^(__unused UIKeyCommand *command) {
               [self sendEventWithName:@"onKeyCommand" body:@{
-                   @"input": [command.input lowercaseString],
-                   @"modifierFlags": [NSNumber numberWithInteger:command.modifierFlags]
+                 @"input": [command.input lowercaseString],
+                 @"modifierFlags": [NSNumber numberWithInteger:command.modifierFlags]
               }];
             }];
       });

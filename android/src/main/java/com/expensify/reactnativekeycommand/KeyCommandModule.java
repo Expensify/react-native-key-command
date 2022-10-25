@@ -12,6 +12,7 @@ import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.bridge.WritableNativeMap;
 import com.facebook.react.bridge.ReadableArray;
+import com.facebook.react.bridge.ReadableMap;
 
 import android.view.KeyEvent;
 
@@ -28,7 +29,7 @@ public class KeyCommandModule extends ReactContextBaseJavaModule {
 
     public static final String NAME = "KeyCommand";
 
-    private static final Set<Set<Object>> commandsArray = new HashSet<Set<Object>>();
+    private static final Set<ReadableMap> commandsArray = new HashSet<ReadableMap>();
 
     public KeyCommandModule(ReactApplicationContext reactContext) {
         super(reactContext);
@@ -54,34 +55,71 @@ public class KeyCommandModule extends ReactContextBaseJavaModule {
         }
 
         WritableMap params = getJsEventParams(keyCode, keyEvent, null);
-        
-        Set<Object> command = new HashSet<Object>();
-        command.add(params.getString("input"));
-        command.add(params.getInt("modifierFlags"));
 
-        if (commandsArray.contains(command)) {
+        if (matchesInput(params)) {
             mJSModule.emit("onKeyCommand", params);
         }
     };
 
+    private boolean matchesInput(ReadableMap command) {
+        /**
+         * command object may have following schema:
+         * - {input: 'f', modifierFlags: 123}
+         * - {input: 'f'}
+         * - {input: '123'}
+         */
+        for (ReadableMap registeredCommand : commandsArray) {
+            boolean hasModifier = registeredCommand.hasKey("modifierFlags");
+            boolean matchInput = registeredCommand.getString("input").equals(command.getString("input"));
+            if (!hasModifier && matchInput) {
+                return true;
+            }
+
+            if (hasModifier) {
+                boolean matchModifier = registeredCommand.getInt("modifierFlags") == command.getInt("modifierFlags");
+                if (matchInput && matchModifier) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
     private WritableMap getJsEventParams(int keyCode, KeyEvent keyEvent, Integer repeatCount) {
         WritableMap params = new WritableNativeMap();
-        int action = keyEvent.getAction();
-        char pressedKey = (char) keyEvent.getUnicodeChar();
 
-        params.putString("input", String.valueOf(keyEvent.getDisplayLabel()).toLowerCase());
-
+        /**
+         * Keyboard mostly has multiple modifier keys (e.g. CTRL Left and Right)
+         * using isPressed method makes comparision by modifier mask
+         */
+        int modifierFlags = 0;
         if (keyEvent.isCtrlPressed()) {
-            params.putInt("modifierFlags", KeyEvent.META_CTRL_MASK);
+            modifierFlags = KeyEvent.META_CTRL_MASK;
         }
         else if (keyEvent.isAltPressed()) {
-            params.putInt("modifierFlags", KeyEvent.META_ALT_MASK);
+            modifierFlags = KeyEvent.META_ALT_MASK;
         }
         else if (keyEvent.isShiftPressed()) {
-            params.putInt("modifierFlags", KeyEvent.META_SHIFT_MASK);
-        } else {
-            params.putInt("modifierFlags", keyEvent.getModifiers());
+            modifierFlags = KeyEvent.META_SHIFT_MASK;
+        } else if (keyEvent.getKeyCode() == KeyEvent.KEYCODE_ESCAPE) {
+            // handle Esc key
+            modifierFlags = KeyEvent.KEYCODE_ESCAPE;
         }
+
+        /**
+         * Handle an event where modifier (e.g. ESC) is pressed without input key (e.g. F)
+         */
+        String input = String.valueOf(modifierFlags);
+        String displayLabel = String.valueOf(keyEvent.getDisplayLabel())
+            .replaceAll("[^A-Za-z0-9]", "")
+            .toLowerCase();
+        if (!displayLabel.isEmpty()) {
+            input = displayLabel;
+        }
+
+        params.putInt("modifierFlags", modifierFlags);
+        params.putString("input", input);
 
         return params;
     }
@@ -114,10 +152,7 @@ public class KeyCommandModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void registerKeyCommands(ReadableArray json, Promise promise) {
         for (int i = 0; i < json.size(); i++) {
-            Set<Object> command = new HashSet<Object>();
-            command.add(json.getMap(i).getString("input"));
-            command.add(json.getMap(i).getInt("modifierFlags"));
-            commandsArray.add(command);
+            commandsArray.add(json.getMap(i));
         }
 
         promise.resolve(null);
@@ -126,10 +161,7 @@ public class KeyCommandModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void unregisterKeyCommands(ReadableArray json, Promise promise) {
         for (int i = 0; i < json.size(); i++) {
-            Set<Object> command = new HashSet<Object>();
-            command.add(json.getMap(i).getString("input"));
-            command.add(json.getMap(i).getInt("modifierFlags"));
-            commandsArray.remove(command);
+            commandsArray.remove(json.getMap(i));
         }
 
         promise.resolve(null);

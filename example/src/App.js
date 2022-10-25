@@ -1,24 +1,31 @@
 import * as React from 'react';
 import {
-    SafeAreaView, StyleSheet, ScrollView, Text,
+    SafeAreaView, StyleSheet, ScrollView, Text, View,
 } from 'react-native';
 import * as KeyCommand from 'react-native-key-command';
 import _ from 'underscore';
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: '#fff',
+        backgroundColor: '#1e3799',
         flex: 1,
     },
-    title: {
+    header: {
         padding: 12,
+    },
+    title: {
         fontSize: 16,
-        fontWeight: '500',
+        color: '#fff',
+        marginBottom: 6,
     },
     scroll: {
+        backgroundColor: '#fff',
         padding: 12,
         borderTopWidth: 1,
         borderTopColor: '#333',
+    },
+    item: {
+        marginBottom: 6,
     },
 });
 
@@ -30,17 +37,32 @@ export default function App() {
     }, []);
 
     React.useEffect(() => {
-        const SEARCH_COMMAND = {input: 'f', modifierFlags: KeyCommand.constants.keyModifierCommand};
-        return KeyCommand.addListener(SEARCH_COMMAND, handleSearchCommandPress);
+        const KEY_COMMAND = {input: 'f', modifierFlags: KeyCommand.constants.keyModifierCommand};
+        return KeyCommand.addListener(KEY_COMMAND, () => handleSearchCommandPress('[CMD + F] pressed'));
+    }, []);
+
+    React.useEffect(() => {
+        const KEY_COMMAND = {input: KeyCommand.constants.keyInputEscape};
+        return KeyCommand.addListener(KEY_COMMAND, () => handleSearchCommandPress('[Esc] pressed'));
+    }, []);
+
+    React.useEffect(() => {
+        const KEY_COMMAND = {input: 'g'};
+        return KeyCommand.addListener(KEY_COMMAND, () => handleSearchCommandPress('[G] pressed'));
     }, []);
 
     return (
         <SafeAreaView style={styles.container}>
-            <Text style={styles.title}>Press [CMD + F] to trigger keycommand events</Text>
+            <View style={styles.header}>
+                <Text style={styles.title}>Registered key commands:</Text>
+                <Text style={styles.title}>1. [CMD + F]</Text>
+                <Text style={styles.title}>2. [G]</Text>
+                <Text style={styles.title}>3. [Esc]</Text>
+            </View>
 
             <ScrollView style={styles.scroll}>
                 {_.map(history, (response, index) => (
-                    <Text key={index}>{JSON.stringify(response, null, 2)}</Text>
+                    <Text key={index} style={styles.item}>{response}</Text>
                 ))}
             </ScrollView>
         </SafeAreaView>

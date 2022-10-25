@@ -2,6 +2,8 @@
 #import <React/RCTEventEmitter.h>
 #import <UIKit/UIKit.h>
 
+extern NSDictionary *ModifierFlagsConstants;
+
 @interface KeyCommand : RCTEventEmitter <RCTBridgeModule>
 
 @end
