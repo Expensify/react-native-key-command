@@ -23,7 +23,7 @@ function validateKeyCommand(keyCommand) {
      * - {input: 'f'}
      * - {input: '123'}
      */
-    if (!keyCommand.input) {
+    if (!keyCommand || !keyCommand.input) {
         throw new Error('Input property for keyCommand object must be provided.');
     }
 
