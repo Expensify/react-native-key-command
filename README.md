@@ -1,5 +1,5 @@
 # react-native-key-command
-react-native-key-command
+Objective-C and Java module that registers and listens to specified keyboard events, dispatching the payload to JavaScript.
 ## Installation
 
 ```sh
