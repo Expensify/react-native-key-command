@@ -1,7 +1,7 @@
 {
   "name": "react-native-key-command",
   "version": "0.1.0",
-  "description": "test",
+  "description": "Objective-C and Java module that registers and listens to specified keyboard events, dispatching the payload to JavaScript",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
   "react-native": "src/index",
@@ -32,7 +32,7 @@
     "android"
   ],
   "repository": "http://github.com/expensify/react-native-key-command",
-  "author": "azimgd <me@azimgd.com> (https://github.com/azimgd)",
+  "author": "Expensify, Inc.",
   "license": "MIT",
   "bugs": {
     "url": "http://github.com/expensify/react-native-key-command/issues"
