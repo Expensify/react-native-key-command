@@ -61,7 +61,9 @@
   },
   "peerDependencies": {
     "react": "*",
-    "react-native": "*"
+    "react-dom": "*",
+    "react-native": "*",
+    "react-native-web": "*"
   },
   "jest": {
     "preset": "react-native",
