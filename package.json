@@ -53,9 +53,9 @@
     "eslint-plugin-jsx-a11y": "^6.6.1",
     "eslint-plugin-react": "^7.30.1",
     "jest": "^28.1.1",
-    "pod-install": "^0.1.0",
-    "react": "17.0.2",
-    "react-native": "0.68.2",
+    "pod-install": "^0.1.38",
+    "react": "18.1.0",
+    "react-native": "0.70.4",
     "react-native-builder-bob": "^0.18.3",
     "release-it": "^15.0.0"
   },
