@@ -1,4 +1,4 @@
-package com.expensify.reactnativekeycommand;
+package com.example.reactnativekeycommand;
 
 import androidx.annotation.NonNull;
 

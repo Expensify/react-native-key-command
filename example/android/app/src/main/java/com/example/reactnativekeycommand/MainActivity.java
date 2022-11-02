@@ -1,11 +1,13 @@
-package com.expensify.reactnativekeycommand;
+package com.example.reactnativekeycommand;
+
+import android.view.KeyEvent;
+import com.expensify.reactnativekeycommand.KeyCommandModule;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
 import com.facebook.react.ReactRootView;
 
 import android.view.KeyEvent;
-import com.expensify.reactnativekeycommand.KeyCommandModule;
 
 public class MainActivity extends ReactActivity {
 
@@ -15,7 +17,7 @@ public class MainActivity extends ReactActivity {
    */
   @Override
   protected String getMainComponentName() {
-    return "KeyCommandExample";
+    return "main";
   }
 
   /**

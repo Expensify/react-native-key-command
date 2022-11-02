@@ -1,4 +1,4 @@
-package com.expensify.reactnativekeycommand.newarchitecture.components;
+package com.example.reactnativekeycommand.newarchitecture.components;
 
 import com.facebook.jni.HybridData;
 import com.facebook.proguard.annotations.DoNotStrip;

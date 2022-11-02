@@ -1,4 +1,4 @@
-package com.expensify.reactnativekeycommand.newarchitecture;
+package com.example.reactnativekeycommand.newarchitecture;
 
 import android.app.Application;
 import androidx.annotation.NonNull;
@@ -19,9 +19,9 @@ import com.facebook.react.fabric.CoreComponentsRegistry;
 import com.facebook.react.fabric.FabricJSIModuleProvider;
 import com.facebook.react.fabric.ReactNativeConfig;
 import com.facebook.react.uimanager.ViewManagerRegistry;
-import com.expensify.reactnativekeycommand.BuildConfig;
-import com.expensify.reactnativekeycommand.newarchitecture.components.MainComponentsRegistry;
-import com.expensify.reactnativekeycommand.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
+import com.example.reactnativekeycommand.BuildConfig;
+import com.example.reactnativekeycommand.newarchitecture.components.MainComponentsRegistry;
+import com.example.reactnativekeycommand.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
 import java.util.ArrayList;
 import java.util.List;
 
