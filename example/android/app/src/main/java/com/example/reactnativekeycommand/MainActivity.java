@@ -1,19 +1,13 @@
-package com.example.reactnativekeycommand;
-
-import android.view.KeyEvent;
-import com.expensify.reactnativekeycommand.KeyCommandModule;
+package com.expensify.reactnativekeycommand;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
 import com.facebook.react.ReactRootView;
 
-public class MainActivity extends ReactActivity {
+import android.view.KeyEvent;
+import com.expensify.reactnativekeycommand.KeyCommandModule;
 
-  @Override
-  public boolean onKeyDown(int keyCode, KeyEvent event) {
-    KeyCommandModule.getInstance().onKeyDownEvent(keyCode, event);
-    return super.onKeyDown(keyCode, event);
-  }
+public class MainActivity extends ReactActivity {
 
   /**
    * Returns the name of the main component registered from JavaScript. This is used to schedule
@@ -21,12 +15,13 @@ public class MainActivity extends ReactActivity {
    */
   @Override
   protected String getMainComponentName() {
-    return "main";
+    return "KeyCommandExample";
   }
 
   /**
    * Returns the instance of the {@link ReactActivityDelegate}. There the RootView is created and
-   * you can specify the rendered you wish to use (Fabric or the older renderer).
+   * you can specify the renderer you wish to use - the new renderer (Fabric) or the old renderer
+   * (Paper).
    */
   @Override
   protected ReactActivityDelegate createReactActivityDelegate() {
@@ -36,6 +31,12 @@ public class MainActivity extends ReactActivity {
   public static class MainActivityDelegate extends ReactActivityDelegate {
     public MainActivityDelegate(ReactActivity activity, String mainComponentName) {
       super(activity, mainComponentName);
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+      KeyCommandModule.getInstance().onKeyDownEvent(keyCode, event);
+      return super.onKeyDown(keyCode, event);
     }
 
     @Override
