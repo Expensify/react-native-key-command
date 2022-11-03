@@ -1,5 +1,9 @@
 # react-native-key-command
-Objective-C and Java module that registers and listens to specified keyboard events, dispatching the payload to JavaScript.
+A cross-platform module that registers and listens to specified keyboard events, dispatching the payload to JavaScript.
+
+✅ Android
+✅ iOS
+✅ Web
 
 ## Installation
 
