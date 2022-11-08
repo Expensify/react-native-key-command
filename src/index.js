@@ -1,5 +1,6 @@
 import {NativeModules, NativeEventEmitter, Platform} from 'react-native';
 import _ from 'underscore';
+import KeyCommandWeb from './KeyCommand.web';
 
 const PLATFORM_ERROR_MESSAGE = Platform.select({ios: "- You have run 'pod install'\n", default: ''});
 const LINKING_ERROR = `The package 'react-native-key-command' doesn't seem to be linked. Make sure: \n\n
@@ -7,14 +8,24 @@ ${PLATFORM_ERROR_MESSAGE}\n
 - You rebuilt the app after installing the package\n
 - You are not using Expo managed workflow\n`;
 
-const KeyCommand = NativeModules.KeyCommand ? NativeModules.KeyCommand : new Proxy(
-    {},
-    {
-        get() {
-            throw new Error(LINKING_ERROR);
+const KeyCommand = (() => {
+    if (NativeModules.KeyCommand) {
+        return NativeModules.KeyCommand;
+    }
+
+    if (Platform.OS === 'web') {
+        return KeyCommandWeb;
+    }
+
+    return new Proxy(
+        {},
+        {
+            get() {
+                throw new Error(LINKING_ERROR);
+            },
         },
-    },
-);
+    );
+})();
 
 function validateKeyCommand(keyCommand) {
     /**
@@ -92,6 +103,10 @@ function unregisterKeyCommands(keyCommands) {
  * @returns {Object} eventListener instance to register a callback.
  */
 function getEventEmitter() {
+    if (Platform.OS === 'web') {
+        return KeyCommand.EventEmitter;
+    }
+
     return new NativeEventEmitter(KeyCommand);
 }
 
@@ -112,7 +127,7 @@ function addListener(keyCommand, callback) {
     const validatedKeyCommand = validateKeyCommand(keyCommand);
     registerKeyCommands([validatedKeyCommand]);
 
-    const event = eventEmitter.addListener('onKeyCommand', (response) => {
+    const listener = (response) => {
         const isInputMatched = (response.input.toLowerCase()) === (validatedKeyCommand.input.toLowerCase());
         const isCommandMatched = (response.modifierFlags || 0) === (validatedKeyCommand.modifierFlags || 0);
 
@@ -123,7 +138,9 @@ function addListener(keyCommand, callback) {
         if (validatedKeyCommand.modifierFlags && isInputMatched && isCommandMatched) {
             callback(response);
         }
-    });
+    };
+
+    const event = eventEmitter.addListener('onKeyCommand', listener);
 
     return () => {
         event.remove();
