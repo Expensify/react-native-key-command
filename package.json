@@ -117,6 +117,7 @@
     ]
   },
   "dependencies": {
+    "events": "^3.3.0",
     "underscore": "^1.13.4"
   }
 }
