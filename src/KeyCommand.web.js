@@ -37,6 +37,12 @@ const constants = {
     keyModifierShiftCommand: 'keyModifierShiftCommand',
 };
 
+/**
+ * Gets modifiers from a keyboard event.
+ *
+ * @param {Event} event
+ * @returns {Array<String>}
+ */
 function getKeyEventModifiers(event) {
     const modifiers = [];
     if (event.shiftKey) {
@@ -54,10 +60,25 @@ function getKeyEventModifiers(event) {
     return modifiers;
 }
 
+/**
+ * Finds index of register key command and listen to the event.
+ *
+ * @param {Object} json - List of key command objects.
+ * @param {string} json.input - any character key from the keyboard.
+ * @param {number} json.modifierFlags - predefined command from getConstants enum.
+ *
+ * @returns {number} index of registered keyCommand.
+ */
 function registeredCommandIndex(json) {
     return _.findIndex(commands, item => item.input === json.input && item.modifierFlags === json.modifierFlags);
 }
 
+/**
+ * Checks if event exists in registered key command array and returns index.
+ *
+ * @param {Event} event
+ * @returns {number} index of registered keyCommand.
+ */
 function eventMatchesInput(event) {
     const modifierFlags = getKeyEventModifiers(event);
     return registeredCommandIndex({input: event.key.toLowerCase(), modifierFlags});
@@ -79,6 +100,13 @@ function getConstants() {
     return constants;
 }
 
+/**
+ * Register key command.
+ *
+ * @param {Object} json - List of key command objects.
+ * @param {string} json.input - any character key from the keyboard.
+ * @param {number} json.modifierFlags - predefined command from getConstants enum.
+ */
 function registerKeyCommands(json) {
     json.forEach((command) => {
         const index = registeredCommandIndex(command);
@@ -89,6 +117,13 @@ function registerKeyCommands(json) {
     });
 }
 
+/**
+ * Unregister key command.
+ *
+ * @param {Object} json - List of key command objects.
+ * @param {string} json.input - any character key from the keyboard.
+ * @param {number} json.modifierFlags - predefined command from getConstants enum.
+ */
 function unregisterKeyCommands(json) {
     json.forEach((command) => {
         const index = registeredCommandIndex(command);
@@ -98,8 +133,6 @@ function unregisterKeyCommands(json) {
         delete commands[command];
     });
 }
-
-registerKeyCommands([{input: 'g', modifierFlags: constants.keyModifierShift}]);
 
 export default {
     getConstants,
