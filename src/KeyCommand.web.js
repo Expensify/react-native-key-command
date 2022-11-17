@@ -93,12 +93,12 @@ function onKeyDown(event) {
     EventEmitter.emit('onKeyCommand', commands[index]);
 }
 
-document.removeEventListener('keydown', onKeyDown, {capture: true});
-document.addEventListener('keydown', onKeyDown, {capture: true});
-
 function getConstants() {
     return constants;
 }
+
+document.removeEventListener('keydown', onKeyDown, {capture: true});
+document.addEventListener('keydown', onKeyDown, {capture: true});
 
 /**
  * Register key command.
