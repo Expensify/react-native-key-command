@@ -70,7 +70,17 @@ function getKeyEventModifiers(event) {
  * @returns {number} index of registered keyCommand.
  */
 function registeredCommandIndex(json) {
-    return _.findIndex(commands, item => item.input === json.input && item.modifierFlags === json.modifierFlags);
+    const matchesModifierFlags = item => (
+        item.modifierFlags === json.modifierFlags
+        || (_.isEmpty(item.modifierFlags) && _.isEmpty(json.modifierFlags))
+    );
+
+    const matchesEscape = item => (item.input === constants.keyInputEscape && json.input === 'escape');
+
+    return _.findIndex(commands, item => (
+        item.input === json.input
+        && matchesModifierFlags(item)
+    ) || matchesEscape(item));
 }
 
 /**
