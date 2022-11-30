@@ -69,7 +69,7 @@ function getKeyEventModifiers(event) {
  *
  * @returns {number} index of registered keyCommand.
  */
-function registeredCommandIndex(json) {
+function getRegisteredCommandIndex(json) {
     const matchesModifierFlags = item => (
         item.modifierFlags === json.modifierFlags
         || (_.isEmpty(item.modifierFlags) && _.isEmpty(json.modifierFlags))
@@ -89,13 +89,13 @@ function registeredCommandIndex(json) {
  * @param {Event} event
  * @returns {number} index of registered keyCommand.
  */
-function eventMatchesInput(event) {
+function getMatchedInputIndex(event) {
     const modifierFlags = getKeyEventModifiers(event);
-    return registeredCommandIndex({input: event.key.toLowerCase(), modifierFlags});
+    return getRegisteredCommandIndex({input: event.key.toLowerCase(), modifierFlags});
 }
 
 function onKeyDown(event) {
-    const index = eventMatchesInput(event);
+    const index = getMatchedInputIndex(event);
     if (index === -1) {
         return;
     }
@@ -107,19 +107,16 @@ function getConstants() {
     return constants;
 }
 
-document.removeEventListener('keydown', onKeyDown, {capture: true});
-document.addEventListener('keydown', onKeyDown, {capture: true});
-
 /**
  * Register key command.
  *
- * @param {Object} json - List of key command objects.
- * @param {string} json.input - any character key from the keyboard.
- * @param {number} json.modifierFlags - predefined command from getConstants enum.
+ * @param {Object} keyCommands - List of key command objects.
+ * @param {string} keyCommands.input - any character key from the keyboard.
+ * @param {number} keyCommands.modifierFlags - predefined command from getConstants enum.
  */
-function registerKeyCommands(json) {
-    json.forEach((command) => {
-        const index = registeredCommandIndex(command);
+function registerKeyCommands(keyCommands) {
+    keyCommands.forEach((command) => {
+        const index = getRegisteredCommandIndex(command);
         if (index !== -1) {
             return;
         }
@@ -130,19 +127,22 @@ function registerKeyCommands(json) {
 /**
  * Unregister key command.
  *
- * @param {Object} json - List of key command objects.
- * @param {string} json.input - any character key from the keyboard.
- * @param {number} json.modifierFlags - predefined command from getConstants enum.
+ * @param {Object} keyCommands - List of key command objects.
+ * @param {string} keyCommands.input - any character key from the keyboard.
+ * @param {number} keyCommands.modifierFlags - predefined command from getConstants enum.
  */
-function unregisterKeyCommands(json) {
-    json.forEach((command) => {
-        const index = registeredCommandIndex(command);
+function unregisterKeyCommands(keyCommands) {
+    keyCommands.forEach((command) => {
+        const index = getRegisteredCommandIndex(command);
         if (index === -1) {
             return;
         }
         delete commands[command];
     });
 }
+
+document.removeEventListener('keydown', onKeyDown, {capture: true});
+document.addEventListener('keydown', onKeyDown, {capture: true});
 
 export default {
     getConstants,

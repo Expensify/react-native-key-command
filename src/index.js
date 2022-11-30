@@ -1,31 +1,8 @@
-import {NativeModules, NativeEventEmitter, Platform} from 'react-native';
 import _ from 'underscore';
-import KeyCommandWeb from './KeyCommand.web';
-
-const PLATFORM_ERROR_MESSAGE = Platform.select({ios: "- You have run 'pod install'\n", default: ''});
-const LINKING_ERROR = `The package 'react-native-key-command' doesn't seem to be linked. Make sure: \n\n
-${PLATFORM_ERROR_MESSAGE}\n
-- You rebuilt the app after installing the package\n
-- You are not using Expo managed workflow\n`;
-
-const KeyCommand = (() => {
-    if (NativeModules.KeyCommand) {
-        return NativeModules.KeyCommand;
-    }
-
-    if (Platform.OS === 'web') {
-        return KeyCommandWeb;
-    }
-
-    return new Proxy(
-        {},
-        {
-            get() {
-                throw new Error(LINKING_ERROR);
-            },
-        },
-    );
-})();
+// eslint-disable-next-line import/extensions
+import getEventEmitter from './EventEmitter';
+// eslint-disable-next-line import/extensions
+import KeyCommand from './NativeModule';
 
 function validateKeyCommand(keyCommand) {
     /**
@@ -97,21 +74,8 @@ function unregisterKeyCommands(keyCommands) {
     return KeyCommand.unregisterKeyCommands(validatedKeyCommands);
 }
 
-/**
- * Key command Event listener.
- *
- * @returns {Object} eventListener instance to register a callback.
- */
-function getEventEmitter() {
-    if (Platform.OS === 'web') {
-        return KeyCommand.EventEmitter;
-    }
-
-    return new NativeEventEmitter(KeyCommand);
-}
-
 const constants = getConstants();
-const eventEmitter = getEventEmitter();
+const eventEmitter = getEventEmitter(KeyCommand);
 
 /**
  * Register key command and listen to the event.
