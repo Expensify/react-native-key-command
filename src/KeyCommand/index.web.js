@@ -46,17 +46,37 @@ const constants = {
 function getKeyEventModifiers(event) {
     const modifiers = [];
     if (event.shiftKey) {
-        return constants.keyModifierShift;
+        modifiers.push(constants.keyModifierShift);
     }
     if (event.ctrlKey) {
-        return constants.keyModifierControl;
+        modifiers.push(constants.keyModifierControl);
     }
     if (event.altKey) {
-        return constants.keyModifierOption;
+        modifiers.push(constants.keyModifierOption);
     }
     if (event.metaKey) {
-        return constants.keyModifierCommand;
+        modifiers.push(constants.keyModifierCommand);
     }
+
+    if (modifiers.length === 1) {
+        return modifiers.pop();
+    }
+
+    if (modifiers.length === 2) {
+        if (modifiers.includes(constants.keyModifierControl) && modifiers.includes(constants.keyModifierCommand)) {
+            return constants.keyModifierControlCommand;
+        }
+        if (modifiers.includes(constants.keyModifierControl) && modifiers.includes(constants.keyModifierOption)) {
+            return constants.keyModifierControlOption;
+        }
+        if (modifiers.includes(constants.keyModifierOption) && modifiers.includes(constants.keyModifierCommand)) {
+            return constants.keyModifierOptionCommand;
+        }
+        if (modifiers.includes(constants.keyModifierShift) && modifiers.includes(constants.keyModifierCommand)) {
+            return constants.keyModifierShiftCommand;
+        }
+    }
+
     return modifiers;
 }
 
@@ -91,6 +111,7 @@ function getRegisteredCommandIndex(json) {
  */
 function getMatchedInputIndex(event) {
     const modifierFlags = getKeyEventModifiers(event);
+    console.log(modifierFlags, 1);
     return getRegisteredCommandIndex({input: event.key.toLowerCase(), modifierFlags});
 }
 
