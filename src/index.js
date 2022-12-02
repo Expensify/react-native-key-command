@@ -2,7 +2,7 @@ import _ from 'underscore';
 // eslint-disable-next-line import/extensions
 import getEventEmitter from './EventEmitter';
 // eslint-disable-next-line import/extensions
-import KeyCommand from './NativeModule';
+import KeyCommand from './KeyCommand';
 
 function validateKeyCommand(keyCommand) {
     /**

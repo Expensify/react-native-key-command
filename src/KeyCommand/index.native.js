@@ -1,5 +1,4 @@
 import {NativeModules, Platform} from 'react-native';
-import KeyCommandWeb from './KeyCommand.web';
 
 const PLATFORM_ERROR_MESSAGE = Platform.select({ios: "- You have run 'pod install'\n", default: ''});
 const LINKING_ERROR = `The package 'react-native-key-command' doesn't seem to be linked. Make sure: \n\n
