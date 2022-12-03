@@ -111,7 +111,6 @@ function getRegisteredCommandIndex(json) {
  */
 function getMatchedInputIndex(event) {
     const modifierFlags = getKeyEventModifiers(event);
-    console.log(modifierFlags, 1);
     return getRegisteredCommandIndex({input: event.key.toLowerCase(), modifierFlags});
 }
 
