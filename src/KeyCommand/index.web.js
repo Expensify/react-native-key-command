@@ -27,6 +27,7 @@ const constants = {
     keyModifierCapsLock: 'keyModifierCapsLock',
     keyModifierCommand: 'keyModifierCommand',
     keyModifierControl: 'keyModifierControl',
+    keyModifierControlShift: 'keyModifierControlShift',
     keyModifierControlCommand: 'keyModifierControlCommand',
     keyModifierControlOption: 'keyModifierControlOption',
     keyModifierControlOptionCommand: 'keyModifierControlOptionCommand',
@@ -63,6 +64,9 @@ function getKeyEventModifiers(event) {
     }
 
     if (modifiers.length === 2) {
+        if (modifiers.includes(constants.keyModifierControl) && modifiers.includes(constants.keyModifierShift)) {
+            return constants.keyModifierControlShift;
+        }
         if (modifiers.includes(constants.keyModifierControl) && modifiers.includes(constants.keyModifierCommand)) {
             return constants.keyModifierControlCommand;
         }
