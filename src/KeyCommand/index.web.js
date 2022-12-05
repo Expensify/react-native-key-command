@@ -120,7 +120,7 @@ function onKeyDown(event) {
         return;
     }
 
-    EventEmitter.emit('onKeyCommand', commands[index]);
+    EventEmitter.emit('onKeyCommand', commands[index], event);
 }
 
 function getConstants() {

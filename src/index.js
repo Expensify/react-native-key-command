@@ -91,16 +91,16 @@ function addListener(keyCommand, callback) {
     const validatedKeyCommand = validateKeyCommand(keyCommand);
     registerKeyCommands([validatedKeyCommand]);
 
-    const listener = (response) => {
+    const listener = (response, event) => {
         const isInputMatched = (response.input.toLowerCase()) === (validatedKeyCommand.input.toLowerCase());
         const isCommandMatched = (response.modifierFlags || 0) === (validatedKeyCommand.modifierFlags || 0);
 
         if (!validatedKeyCommand.modifierFlags && isInputMatched) {
-            callback(response);
+            callback(response, event);
         }
 
         if (validatedKeyCommand.modifierFlags && isInputMatched && isCommandMatched) {
-            callback(response);
+            callback(response, event);
         }
     };
 
