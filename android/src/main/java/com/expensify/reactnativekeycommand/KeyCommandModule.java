@@ -105,9 +105,24 @@ public class KeyCommandModule extends ReactContextBaseJavaModule {
         }
         else if (keyEvent.isShiftPressed()) {
             modifierFlags = KeyEvent.META_SHIFT_MASK;
-        } else if (keyEvent.getKeyCode() == KeyEvent.KEYCODE_ESCAPE) {
-            // handle Esc key
+        }
+        else if (keyEvent.getKeyCode() == KeyEvent.KEYCODE_ESCAPE) {
             modifierFlags = KeyEvent.KEYCODE_ESCAPE;
+        }
+        else if (keyEvent.getKeyCode() == KeyEvent.KEYCODE_DPAD_UP) {
+            modifierFlags = KeyEvent.KEYCODE_DPAD_UP;
+        }
+        else if (keyEvent.getKeyCode() == KeyEvent.KEYCODE_DPAD_DOWN) {
+            modifierFlags = KeyEvent.KEYCODE_DPAD_DOWN;
+        }
+        else if (keyEvent.getKeyCode() == KeyEvent.KEYCODE_DPAD_LEFT) {
+            modifierFlags = KeyEvent.KEYCODE_DPAD_LEFT;
+        }
+        else if (keyEvent.getKeyCode() == KeyEvent.KEYCODE_DPAD_RIGHT) {
+            modifierFlags = KeyEvent.KEYCODE_DPAD_RIGHT;
+        }
+        else if (keyEvent.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
+            modifierFlags = KeyEvent.KEYCODE_ENTER;
         }
 
         /**
@@ -119,6 +134,10 @@ public class KeyCommandModule extends ReactContextBaseJavaModule {
             .toLowerCase();
         if (!displayLabel.isEmpty()) {
             input = displayLabel;
+        }
+        if (keyEvent.getKeyCode() == KeyEvent.KEYCODE_ENTER && keyEvent.isCtrlPressed()) {
+            input = Integer.toString(KeyEvent.KEYCODE_ENTER);
+            modifierFlags = KeyEvent.META_CTRL_MASK;
         }
 
         params.putInt("modifierFlags", modifierFlags);
@@ -150,6 +169,7 @@ public class KeyCommandModule extends ReactContextBaseJavaModule {
         constants.put("keyInputLeftArrow", KeyEvent.KEYCODE_DPAD_LEFT);
         constants.put("keyInputRightArrow", KeyEvent.KEYCODE_DPAD_RIGHT);
         constants.put("keyInputEscape", KeyEvent.KEYCODE_ESCAPE);
+        constants.put("keyInputEnter", KeyEvent.KEYCODE_ENTER);
 
         return constants;
     }

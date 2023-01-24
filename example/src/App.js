@@ -56,6 +56,21 @@ export default function App() {
         return KeyCommand.addListener(KEY_COMMAND, () => handleSearchCommandPress('[CMD + SHIFT + K] pressed'));
     }, []);
 
+    React.useEffect(() => {
+        const KEY_COMMAND = {input: KeyCommand.constants.keyInputEnter};
+        return KeyCommand.addListener(KEY_COMMAND, () => handleSearchCommandPress('[Enter] pressed'));
+    }, []);
+
+    React.useEffect(() => {
+        const KEY_COMMAND = {input: KeyCommand.constants.keyInputDownArrow};
+        return KeyCommand.addListener(KEY_COMMAND, () => handleSearchCommandPress('[Down arrow] pressed'));
+    }, []);
+
+    React.useEffect(() => {
+        const KEY_COMMAND = {input: KeyCommand.constants.keyInputUpArrow};
+        return KeyCommand.addListener(KEY_COMMAND, () => handleSearchCommandPress('[Up arrow] pressed'));
+    }, []);
+
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.header}>
@@ -63,7 +78,9 @@ export default function App() {
                 <Text style={styles.title}>1. [CMD + F]</Text>
                 <Text style={styles.title}>2. [G]</Text>
                 <Text style={styles.title}>3. [Esc]</Text>
-                <Text style={styles.title}>3. [CMD + SHIFT + K]</Text>
+                <Text style={styles.title}>4. [CMD + SHIFT + K]</Text>
+                <Text style={styles.title}>5. [ENTER]</Text>
+                <Text style={styles.title}>6. [DOWN / UP ARROW]</Text>
             </View>
 
             <ScrollView style={styles.scroll}>
