@@ -94,7 +94,10 @@ public class KeyCommandModule extends ReactContextBaseJavaModule {
          * using isPressed method makes comparision by modifier mask
          */
         int modifierFlags = 0;
-        if (keyEvent.isCtrlPressed()) {
+        if (keyEvent.isCtrlPressed() && keyEvent.isShiftPressed()) {
+            modifierFlags = KeyEvent.META_CTRL_MASK | KeyEvent.META_SHIFT_MASK;
+        }
+        else if (keyEvent.isCtrlPressed()) {
             modifierFlags = KeyEvent.META_CTRL_MASK;
         }
         else if (keyEvent.isAltPressed()) {
@@ -137,6 +140,8 @@ public class KeyCommandModule extends ReactContextBaseJavaModule {
 
         constants.put("keyModifierShift", KeyEvent.META_SHIFT_MASK);
         constants.put("keyModifierControl", KeyEvent.META_CTRL_MASK);
+        constants.put("keyModifierShiftCommand", KeyEvent.META_CTRL_MASK | KeyEvent.META_SHIFT_MASK);
+        constants.put("keyModifierShiftControl", KeyEvent.META_CTRL_MASK | KeyEvent.META_SHIFT_MASK);
         constants.put("keyModifierAlternate", KeyEvent.META_ALT_MASK);
         constants.put("keyModifierCommand", KeyEvent.META_CTRL_MASK);
         constants.put("keyModifierNumericPad", KeyEvent.KEYCODE_NUM);

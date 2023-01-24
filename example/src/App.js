@@ -51,6 +51,11 @@ export default function App() {
         return KeyCommand.addListener(KEY_COMMAND, () => handleSearchCommandPress('[G] pressed'));
     }, []);
 
+    React.useEffect(() => {
+        const KEY_COMMAND = {input: 'k', modifierFlags: KeyCommand.constants.keyModifierShiftControl};
+        return KeyCommand.addListener(KEY_COMMAND, () => handleSearchCommandPress('[CMD + SHIFT + K] pressed'));
+    }, []);
+
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.header}>
@@ -58,6 +63,7 @@ export default function App() {
                 <Text style={styles.title}>1. [CMD + F]</Text>
                 <Text style={styles.title}>2. [G]</Text>
                 <Text style={styles.title}>3. [Esc]</Text>
+                <Text style={styles.title}>3. [CMD + SHIFT + K]</Text>
             </View>
 
             <ScrollView style={styles.scroll}>
