@@ -24,6 +24,7 @@ const constants = {
     keyInputLeftArrow: 'keyInputLeftArrow',
     keyInputRightArrow: 'keyInputRightArrow',
     keyInputUpArrow: 'keyInputUpArrow',
+    keyInputEnter: 'keyInputEnter',
     keyModifierCapsLock: 'keyModifierCapsLock',
     keyModifierCommand: 'keyModifierCommand',
     keyModifierControl: 'keyModifierControl',
@@ -79,6 +80,9 @@ function getKeyEventModifiers(event) {
         if (modifiers.includes(constants.keyModifierShift) && modifiers.includes(constants.keyModifierCommand)) {
             return constants.keyModifierShiftCommand;
         }
+        if (modifiers.includes(constants.keyModifierCommand) && modifiers.includes(constants.keyModifierShift)) {
+            return constants.keyModifierCommandShift;
+        }
     }
 
     return modifiers;
@@ -100,11 +104,23 @@ function getRegisteredCommandIndex(json) {
     );
 
     const matchesEscape = item => (item.input === constants.keyInputEscape && json.input === 'escape');
+    const matchesEnter = item => (item.input === constants.keyInputEnter && json.input === 'enter');
+    const matchesUpArrow = item => (item.input === constants.keyInputUpArrow && json.input === 'arrowup');
+    const matchesDownArrow = item => (item.input === constants.keyInputDownArrow && json.input === 'arrowdown');
+    const matchesLeftDown = item => (item.input === constants.keyInputLeftArrow && json.input === 'arrowleft');
+    const matchesRightDown = item => (item.input === constants.keyInputRightArrow && json.input === 'arrowright');
 
     return _.findIndex(commands, item => (
-        item.input === json.input
+        (item.input === json.input)
         && matchesModifierFlags(item)
-    ) || matchesEscape(item));
+    ) || (
+        matchesEnter(item) && matchesModifierFlags(item)
+    ) || matchesEscape(item)
+        || matchesEnter(item)
+        || matchesUpArrow(item)
+        || matchesDownArrow(item)
+        || matchesLeftDown(item)
+        || matchesRightDown(item));
 }
 
 /**
