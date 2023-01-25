@@ -23,7 +23,8 @@ NSDictionary *ModifierFlagsConstants = @{
   @"keyInputDownArrow": UIKeyInputDownArrow,
   @"keyInputLeftArrow": UIKeyInputLeftArrow,
   @"keyInputRightArrow": UIKeyInputRightArrow,
-  @"keyInputEscape": UIKeyInputEscape
+  @"keyInputEscape": UIKeyInputEscape,
+  @"keyInputEnter": @-1
 };
 
 @interface UIEvent (UIPhysicalKeyboardEvent)
