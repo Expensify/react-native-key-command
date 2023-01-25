@@ -52,7 +52,7 @@ export default function App() {
     }, []);
 
     React.useEffect(() => {
-        const KEY_COMMAND = {input: 'k', modifierFlags: KeyCommand.constants.keyModifierShiftControl};
+        const KEY_COMMAND = {input: 'k', modifierFlags: KeyCommand.constants.keyModifierShiftCommand};
         return KeyCommand.addListener(KEY_COMMAND, () => handleSearchCommandPress('[CMD + SHIFT + K] pressed'));
     }, []);
 
