@@ -180,7 +180,6 @@ RCT_NOT_IMPLEMENTED(-(instancetype)init)
   UIKeyModifierFlags modifierFlags = 0;
   BOOL isKeyDown = NO;
   long keyCode = 0;
-  
   if ([event respondsToSelector:@selector(_unmodifiedInput)]) {
     unmodifiedInput = [event _unmodifiedInput];
   }
