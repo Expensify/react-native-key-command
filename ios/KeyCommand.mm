@@ -23,7 +23,8 @@ NSDictionary *ModifierFlagsConstants = @{
   @"keyInputDownArrow": UIKeyInputDownArrow,
   @"keyInputLeftArrow": UIKeyInputLeftArrow,
   @"keyInputRightArrow": UIKeyInputRightArrow,
-  @"keyInputEscape": UIKeyInputEscape
+  @"keyInputEscape": UIKeyInputEscape,
+  @"keyInputEnter": @40
 };
 
 @interface UIEvent (UIPhysicalKeyboardEvent)
@@ -78,6 +79,14 @@ RCT_NOT_IMPLEMENTED(-(instancetype)init)
 
 - (BOOL)matchesInput:(NSString *)input flags:(UIKeyModifierFlags)flags
 {
+  // "enter / return" key check
+  if (
+    [input isEqualToString:@"40"] &&
+    [_key isEqualToString:@"40"]
+  ) {
+    return true;
+  }
+
   if (
     [input isEqualToString:UIKeyInputEscape] &&
     [_key isEqualToString:UIKeyInputEscape]
@@ -171,7 +180,6 @@ RCT_NOT_IMPLEMENTED(-(instancetype)init)
   UIKeyModifierFlags modifierFlags = 0;
   BOOL isKeyDown = NO;
   long keyCode = 0;
-
   if ([event respondsToSelector:@selector(_unmodifiedInput)]) {
     unmodifiedInput = [event _unmodifiedInput];
   }
@@ -190,6 +198,10 @@ RCT_NOT_IMPLEMENTED(-(instancetype)init)
 
   if ([event respondsToSelector:@selector(_keyCode)]) {
     keyCode = [event _keyCode];
+  }
+  
+  if (keyCode == [[ModifierFlagsConstants objectForKey:@"keyInputEnter"] longValue]) {
+    unmodifiedInput = [[ModifierFlagsConstants objectForKey:@"keyInputEnter"] stringValue];
   }
 
   BOOL interactionEnabled = !UIApplication.sharedApplication.isIgnoringInteractionEvents;
