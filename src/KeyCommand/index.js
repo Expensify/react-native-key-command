@@ -28,7 +28,6 @@ const constants = {
     keyModifierCapsLock: 'keyModifierCapsLock',
     keyModifierCommand: 'keyModifierCommand',
     keyModifierControl: 'keyModifierControl',
-    keyModifierControlShift: 'keyModifierControlShift',
     keyModifierControlCommand: 'keyModifierControlCommand',
     keyModifierControlOption: 'keyModifierControlOption',
     keyModifierControlOptionCommand: 'keyModifierControlOptionCommand',
@@ -37,6 +36,8 @@ const constants = {
     keyModifierOptionCommand: 'keyModifierOptionCommand',
     keyModifierShift: 'keyModifierShift',
     keyModifierShiftCommand: 'keyModifierShiftCommand',
+    keyModifierShiftControl: 'keyModifierShiftControl',
+    keyModifierAlternate: 'keyModifierAlternate'
 };
 
 /**
@@ -66,7 +67,7 @@ function getKeyEventModifiers(event) {
 
     if (modifiers.length === 2) {
         if (modifiers.includes(constants.keyModifierControl) && modifiers.includes(constants.keyModifierShift)) {
-            return constants.keyModifierControlShift;
+            return constants.keyModifierShiftControl;
         }
         if (modifiers.includes(constants.keyModifierControl) && modifiers.includes(constants.keyModifierCommand)) {
             return constants.keyModifierControlCommand;
