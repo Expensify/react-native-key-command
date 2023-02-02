@@ -28,7 +28,6 @@ const constants = {
     keyModifierCapsLock: 'keyModifierCapsLock',
     keyModifierCommand: 'keyModifierCommand',
     keyModifierControl: 'keyModifierControl',
-    keyModifierControlShift: 'keyModifierControlShift',
     keyModifierControlCommand: 'keyModifierControlCommand',
     keyModifierControlOption: 'keyModifierControlOption',
     keyModifierControlOptionCommand: 'keyModifierControlOptionCommand',
@@ -37,6 +36,8 @@ const constants = {
     keyModifierOptionCommand: 'keyModifierOptionCommand',
     keyModifierShift: 'keyModifierShift',
     keyModifierShiftCommand: 'keyModifierShiftCommand',
+    keyModifierShiftControl: 'keyModifierShiftControl',
+    keyModifierAlternate: 'keyModifierAlternate'
 };
 
 /**
