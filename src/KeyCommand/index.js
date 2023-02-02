@@ -67,7 +67,7 @@ function getKeyEventModifiers(event) {
 
     if (modifiers.length === 2) {
         if (modifiers.includes(constants.keyModifierControl) && modifiers.includes(constants.keyModifierShift)) {
-            return constants.keyModifierControlShift;
+            return constants.keyModifierShiftControl;
         }
         if (modifiers.includes(constants.keyModifierControl) && modifiers.includes(constants.keyModifierCommand)) {
             return constants.keyModifierControlCommand;
