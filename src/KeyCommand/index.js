@@ -182,8 +182,11 @@ function unregisterKeyCommands(keyCommands) {
     });
 }
 
-document.removeEventListener('keydown', onKeyDown, {capture: true});
-document.addEventListener('keydown', onKeyDown, {capture: true});
+// `window` is not available, so `window.document` (or simply `document`) will fail.
+if (typeof window !== 'undefined') {
+    document.removeEventListener('keydown', onKeyDown, {capture: true});
+    document.addEventListener('keydown', onKeyDown, {capture: true});
+}
 
 export default {
     getConstants,
