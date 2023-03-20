@@ -205,22 +205,10 @@ RCT_NOT_IMPLEMENTED(-(instancetype)init)
   }
 
   BOOL interactionEnabled = !UIApplication.sharedApplication.isIgnoringInteractionEvents;
-  BOOL hasFirstResponder = NO;
   
   if (isKeyDown && interactionEnabled) {
-    UIResponder *firstResponder = nil;
-    for (UIWindow *window in [self allWindows]) {
-      firstResponder = [window valueForKey:@"firstResponder"];
-      if (firstResponder) {
-        hasFirstResponder = YES;
-        break;
-      }
-    }
-
     // Ignore key commands (except escape) when there's an active responder
-    if (!firstResponder) {
-      [self RCT_handleKeyCommand:unmodifiedInput flags:modifierFlags];
-    }
+    [self RCT_handleKeyCommand:unmodifiedInput flags:modifierFlags];
   }
 };
 
