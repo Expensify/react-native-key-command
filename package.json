@@ -1,6 +1,6 @@
 {
   "name": "react-native-key-command",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "description": "A cross-platform module that registers and listens to specified keyboard events, dispatching the payload to JavaScript",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
