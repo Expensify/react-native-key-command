@@ -132,7 +132,11 @@ function getRegisteredCommandIndex(json) {
  */
 function getMatchedInputIndex(event) {
     const modifierFlags = getKeyEventModifiers(event);
-    return getRegisteredCommandIndex({input: event.key.toLowerCase(), modifierFlags});
+
+    // Event key may be undefined in some cases, such as when autocomplete is used on a text input
+    const input = event.key ? event.key.toLowerCase() : undefined;
+
+    return getRegisteredCommandIndex({input, modifierFlags});
 }
 
 function onKeyDown(event) {
