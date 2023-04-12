@@ -100,7 +100,14 @@ RCT_NOT_IMPLEMENTED(-(instancetype)init)
   ) {
     return true;
   }
-  
+
+  if (
+    [input isEqualToString:UIKeyInputDownArrow] &&
+    [_key isEqualToString:UIKeyInputDownArrow]
+  ) {
+    return true;
+  }
+
   if (
     [input isEqualToString:UIKeyInputLeftArrow] &&
     [_key isEqualToString:UIKeyInputLeftArrow]
