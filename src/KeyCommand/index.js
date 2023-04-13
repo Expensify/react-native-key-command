@@ -37,7 +37,7 @@ const constants = {
     keyModifierShift: 'keyModifierShift',
     keyModifierShiftCommand: 'keyModifierShiftCommand',
     keyModifierShiftControl: 'keyModifierShiftControl',
-    keyModifierAlternate: 'keyModifierAlternate'
+    keyModifierAlternate: 'keyModifierAlternate',
 };
 
 /**

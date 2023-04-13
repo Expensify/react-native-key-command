@@ -1,6 +1,6 @@
 {
   "name": "react-native-key-command",
-  "version": "0.9.0",
+  "version": "0.9.1",
   "description": "A cross-platform module that registers and listens to specified keyboard events, dispatching the payload to JavaScript",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
@@ -54,16 +54,16 @@
     "eslint-plugin-react": "^7.31.11",
     "jest": "^28.1.1",
     "pod-install": "^0.1.38",
-    "react": "18.1.0",
-    "react-native": "0.70.4",
+    "react": "^18.1.0",
+    "react-native": "^0.70.4",
     "react-native-builder-bob": "^0.18.3",
     "release-it": "^15.0.0"
   },
   "peerDependencies": {
-    "react": "18.1.0",
+    "react": "^18.1.0",
     "react-dom": "18.1.0",
-    "react-native": "0.70.4",
-    "react-native-web": "0.18.1"
+    "react-native": "^0.70.4",
+    "react-native-web": "^0.18.1"
   },
   "jest": {
     "preset": "react-native",
