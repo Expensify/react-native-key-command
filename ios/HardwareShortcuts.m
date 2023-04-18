@@ -54,12 +54,16 @@
                                             action:@selector(handleKeyCommand:)];
     [commands addObject:command];
   }];
-  
+
   return commands;
 }
 
 - (void)handleKeyCommand:(UIKeyCommand *)keyCommand {
-  NSLog(@"inside: %@ was pressed", keyCommand.input);
+  [[_commands allObjects] enumerateObjectsUsingBlock:^(HardwareKeyCommand* obj, NSUInteger idx, BOOL *stop) {
+    if ([obj key] == keyCommand.input && [obj flags] == keyCommand.modifierFlags) {
+      obj.block(keyCommand);
+    }
+  }];
 }
 
 - (void)registerKeyCommand:(NSString *)input
@@ -72,7 +76,6 @@
 }
 
 - (void)unregisterKeyCommand {
-  NSLog(@"inside: unregister");
 }
 
 @end
