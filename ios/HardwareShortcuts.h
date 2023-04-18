@@ -17,7 +17,9 @@
 + (instancetype)sharedInstance;
 - (NSArray *)keyCommands;
 - (void)handleKeyCommand:(UIKeyCommand *)keyCommand;
-- (void)registerKeyCommand;
+- (void)registerKeyCommand:(NSString *)input
+             modifierFlags:(UIKeyModifierFlags)flags
+                    action:(void (^)(UIKeyCommand *))block;
 - (void)unregisterKeyCommand;
 
 @property (nonatomic, strong) NSMutableSet<HardwareKeyCommand *> *commands;
