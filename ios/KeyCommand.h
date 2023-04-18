@@ -24,7 +24,7 @@ NSDictionary *ModifierFlagsConstants = @{
   @"keyInputLeftArrow": UIKeyInputLeftArrow,
   @"keyInputRightArrow": UIKeyInputRightArrow,
   @"keyInputEscape": UIKeyInputEscape,
-  @"keyInputEnter": @40
+  @"keyInputEnter": @"\r",
 };
 
 @interface KeyCommand : RCTEventEmitter <RCTBridgeModule>
