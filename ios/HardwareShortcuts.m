@@ -1,24 +1,5 @@
 #import "HardwareShortcuts.h"
 
-@implementation HardwareKeyCommand
-
-- (instancetype)init:(NSString *)key flags:(UIKeyModifierFlags)flags block:(void (^)(UIKeyCommand *))block
-{
-  if ((self = [super init])) {
-    _key = key;
-    _flags = flags;
-    _block = block;
-  }
-  return self;
-}
-
-- (id)copyWithZone:(__unused NSZone *)zone
-{
-  return self;
-}
-
-@end
-
 @implementation HardwareShortcuts
 
 - (instancetype)init
@@ -59,7 +40,7 @@
 }
 
 - (void)handleKeyCommand:(UIKeyCommand *)keyCommand {
-  [[_commands allObjects] enumerateObjectsUsingBlock:^(HardwareKeyCommand* obj, NSUInteger idx, BOOL *stop) {
+  [[_commands allObjects] enumerateObjectsUsingBlock:^(HardwareShortcut* obj, NSUInteger idx, BOOL *stop) {
     if ([obj key] == keyCommand.input && [obj flags] == keyCommand.modifierFlags) {
       obj.block(keyCommand);
     }
@@ -70,7 +51,7 @@
              modifierFlags:(UIKeyModifierFlags)flags
                     action:(void (^)(UIKeyCommand *))block
 {
-  HardwareKeyCommand *keyCommand = [[HardwareKeyCommand alloc] init:input flags:flags block:block];
+  HardwareShortcut *keyCommand = [[HardwareShortcut alloc] init:input flags:flags block:block];
   [_commands removeObject:keyCommand];
   [_commands addObject:keyCommand];
 }

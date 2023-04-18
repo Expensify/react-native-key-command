@@ -2,15 +2,7 @@
 #define Shortcuts_h
 
 #include <UIKit/UIKit.h>
-
-@interface HardwareKeyCommand : NSObject <NSCopying>
-
-@property (nonatomic, copy, readonly) NSString *key;
-@property (nonatomic, readonly) UIKeyModifierFlags flags;
-@property (nonatomic, copy) void (^block)(UIKeyCommand *);
-
-@end
-
+#include "HardwareShortcut.h"
 
 @interface HardwareShortcuts : NSObject
 
@@ -22,7 +14,7 @@
                     action:(void (^)(UIKeyCommand *))block;
 - (void)unregisterKeyCommand;
 
-@property (nonatomic, strong) NSMutableSet<HardwareKeyCommand *> *commands;
+@property (nonatomic, strong) NSMutableSet<HardwareShortcut *> *commands;
 
 @end
 
