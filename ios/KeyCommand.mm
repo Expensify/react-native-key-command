@@ -19,21 +19,21 @@ RCT_EXPORT_MODULE()
 }
 
 + (id)allocWithZone:(NSZone *)zone {
-    static KeyCommand *sharedInstance = nil;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-      sharedInstance = [super allocWithZone:zone];
-    });
-    return sharedInstance;
+  static KeyCommand *sharedInstance = nil;
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+    sharedInstance = [super allocWithZone:zone];
+  });
+  return sharedInstance;
 }
 
 + (RCTCallableJSModules *)sharedJsModule {
-    static RCTCallableJSModules *sharedJsModule = nil;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-      sharedJsModule = [RCTCallableJSModules new];
-    });
-    return sharedJsModule;
+  static RCTCallableJSModules *sharedJsModule = nil;
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+    sharedJsModule = [RCTCallableJSModules new];
+  });
+  return sharedJsModule;
 }
 
 - (void)stopObserving
