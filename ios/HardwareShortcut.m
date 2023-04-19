@@ -3,11 +3,11 @@
 
 @implementation HardwareShortcut
 
-- (instancetype)init:(NSString *)key flags:(UIKeyModifierFlags)flags block:(void (^)(UIKeyCommand *))block
+- (instancetype)init:(NSString *)input modifierFlags:(UIKeyModifierFlags)modifierFlags block:(void (^)(UIKeyCommand *))block
 {
   if ((self = [super init])) {
-    _key = key;
-    _flags = flags;
+    _input = input;
+    _modifierFlags = modifierFlags;
     _block = block;
   }
   return self;
@@ -18,14 +18,14 @@
   return self;
 }
 
-- (BOOL)matchesInput:(NSString *)input flags:(UIKeyModifierFlags)flags
+- (BOOL)matchesInput:(NSString *)input modifierFlags:(UIKeyModifierFlags)modifierFlags
 {
-  return _key == input && _flags == flags;
+  return _input == input && _modifierFlags == modifierFlags;
 }
 
 - (BOOL)matchesInput:(UIKeyCommand *)keyCommand
 {
-  return _key == keyCommand.input && _flags == keyCommand.modifierFlags;
+  return _input == keyCommand.input && _modifierFlags == keyCommand.modifierFlags;
 }
 
 @end

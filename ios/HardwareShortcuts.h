@@ -7,12 +7,16 @@
 @interface HardwareShortcuts : NSObject
 
 + (instancetype)sharedInstance;
+
 - (NSArray *)keyCommands;
+
 - (void)handleKeyCommand:(UIKeyCommand *)keyCommand;
+
 - (void)registerKeyCommand:(NSString *)input
-             modifierFlags:(UIKeyModifierFlags)flags
+             modifierFlags:(UIKeyModifierFlags)modifierFlags
                     action:(void (^)(UIKeyCommand *))block;
-- (void)unregisterKeyCommand;
+
+- (void)unregisterKeyCommand:(NSString *)input modifierFlags:(UIKeyModifierFlags)modifierFlags;
 
 @property (nonatomic, strong) NSMutableSet<HardwareShortcut *> *commands;
 

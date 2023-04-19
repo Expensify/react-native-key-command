@@ -5,13 +5,13 @@
 
 @interface HardwareShortcut : NSObject <NSCopying>
 
-- (instancetype)init:(NSString *)key flags:(UIKeyModifierFlags)flags block:(void (^)(UIKeyCommand *))block;
+- (instancetype)init:(NSString *)input modifierFlags:(UIKeyModifierFlags)modifierFlags block:(void (^)(UIKeyCommand *))block;
 
-- (BOOL)matchesInput:(NSString *)input flags:(UIKeyModifierFlags)flags;
+- (BOOL)matchesInput:(NSString *)input modifierFlags:(UIKeyModifierFlags)modifierFlags;
 - (BOOL)matchesInput:(UIKeyCommand *)keyCommand;
 
-@property (nonatomic, copy, readonly) NSString *key;
-@property (nonatomic, readonly) UIKeyModifierFlags flags;
+@property (nonatomic, copy, readonly) NSString *input;
+@property (nonatomic, readonly) UIKeyModifierFlags modifierFlags;
 @property (nonatomic, copy) void (^block)(UIKeyCommand *);
 
 @end

@@ -24,9 +24,9 @@
 - (NSArray *)keyCommands {
   NSMutableArray *commands = [NSMutableArray array];
 
-  [[_commands allObjects] enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-    id command = [UIKeyCommand keyCommandWithInput:[obj key]
-                                     modifierFlags:[obj flags]
+  [[_commands allObjects] enumerateObjectsUsingBlock:^(HardwareShortcut* hardwareShortcut, NSUInteger idx, BOOL *stop) {
+    id command = [UIKeyCommand keyCommandWithInput:[hardwareShortcut input]
+                                     modifierFlags:[hardwareShortcut modifierFlags]
                                             action:@selector(handleKeyCommand:)];
     [commands addObject:command];
   }];
@@ -35,26 +35,26 @@
 }
 
 - (void)handleKeyCommand:(UIKeyCommand *)keyCommand {
-  [[_commands allObjects] enumerateObjectsUsingBlock:^(HardwareShortcut* obj, NSUInteger idx, BOOL *stop) {
-    if ([obj matchesInput:keyCommand]) {
-      obj.block(keyCommand);
+  [[_commands allObjects] enumerateObjectsUsingBlock:^(HardwareShortcut* hardwareShortcut, NSUInteger idx, BOOL *stop) {
+    if ([hardwareShortcut matchesInput:keyCommand]) {
+      hardwareShortcut.block(keyCommand);
     }
   }];
 }
 
 - (void)registerKeyCommand:(NSString *)input
-             modifierFlags:(UIKeyModifierFlags)flags
+             modifierFlags:(UIKeyModifierFlags)modifierFlags
                     action:(void (^)(UIKeyCommand *))block
 {
-  HardwareShortcut *keyCommand = [[HardwareShortcut alloc] init:input flags:flags block:block];
+  HardwareShortcut *keyCommand = [[HardwareShortcut alloc] init:input modifierFlags:modifierFlags block:block];
   [_commands removeObject:keyCommand];
   [_commands addObject:keyCommand];
 }
 
-- (void)unregisterKeyCommand:(NSString *)input modifierFlags:(UIKeyModifierFlags)flags {
-  [[_commands allObjects] enumerateObjectsUsingBlock:^(HardwareShortcut* obj, NSUInteger idx, BOOL *stop) {
-    if ([obj matchesInput:input flags:flags]) {
-      [_commands removeObject:obj];
+- (void)unregisterKeyCommand:(NSString *)input modifierFlags:(UIKeyModifierFlags)modifierFlags {
+  [[_commands allObjects] enumerateObjectsUsingBlock:^(HardwareShortcut* hardwareShortcut, NSUInteger idx, BOOL *stop) {
+    if ([hardwareShortcut matchesInput:input modifierFlags:modifierFlags]) {
+      [_commands removeObject:hardwareShortcut];
     }
   }];
 }
