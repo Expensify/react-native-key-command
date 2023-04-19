@@ -18,6 +18,8 @@
 
 - (void)unregisterKeyCommand:(NSString *)input modifierFlags:(UIKeyModifierFlags)modifierFlags;
 
+- (void)resetKeyCommands;
+
 @property (nonatomic, strong) NSMutableSet<HardwareShortcut *> *commands;
 
 @end

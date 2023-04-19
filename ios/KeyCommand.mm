@@ -18,6 +18,31 @@ RCT_EXPORT_MODULE()
   return ModifierFlagsConstants;
 }
 
++ (id)allocWithZone:(NSZone *)zone {
+    static KeyCommand *sharedInstance = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+      sharedInstance = [super allocWithZone:zone];
+    });
+    return sharedInstance;
+}
+
++ (RCTCallableJSModules *)sharedJsModule {
+    static RCTCallableJSModules *sharedJsModule = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+      sharedJsModule = [RCTCallableJSModules new];
+    });
+    return sharedJsModule;
+}
+
+- (void)stopObserving
+{
+  dispatch_async(dispatch_get_main_queue(), ^{
+    [[HardwareShortcuts sharedInstance] resetKeyCommands];
+  });
+}
+
 RCT_REMAP_METHOD(registerKeyCommands,
                  registerKeyCommands:(NSArray *)json
                  withResolver:(RCTPromiseResolveBlock)resolve
@@ -33,17 +58,21 @@ RCT_REMAP_METHOD(registerKeyCommands,
       modifierFlags = @0;
     }
 
+    id action = ^(__unused UIKeyCommand *command) {
+      dispatch_async(dispatch_get_main_queue(), ^{
+        id body = @{
+          @"input": [command.input lowercaseString],
+          @"modifierFlags": [NSNumber numberWithInteger:command.modifierFlags]
+        };
+        [self sendEventWithName:@"onKeyCommand" body:body];
+      });
+    };
+    
     dispatch_async(dispatch_get_main_queue(), ^{
       [[HardwareShortcuts sharedInstance]
         registerKeyCommand:input
         modifierFlags:[modifierFlags integerValue]
-        action:^(__unused UIKeyCommand *command) {
-          id body = @{
-            @"input": [command.input lowercaseString],
-            @"modifierFlags": [NSNumber numberWithInteger:command.modifierFlags]
-          };
-          [self sendEventWithName:@"onKeyCommand" body:body];
-        }];
+        action:action];
     });
   }
 

@@ -66,4 +66,12 @@
   }];
 }
 
+- (void)resetKeyCommands {
+  RCTAssertMainQueue();
+
+  [[_commands allObjects] enumerateObjectsUsingBlock:^(HardwareShortcut* hardwareShortcut, NSUInteger idx, BOOL *stop) {
+    [_commands removeObject:hardwareShortcut];
+  }];
+}
+
 @end
