@@ -27,21 +27,22 @@ RCT_REMAP_METHOD(registerKeyCommands,
 
   for (NSDictionary *commandJSON in commandsArray) {
     NSString *input = commandJSON[@"input"];
-    NSNumber *flags = commandJSON[@"modifierFlags"];
+    NSNumber *modifierFlags = commandJSON[@"modifierFlags"];
 
-    if (!flags) {
-        flags = @0;
+    if (!modifierFlags) {
+        modifierFlags = @0;
     }
 
     dispatch_async(dispatch_get_main_queue(), ^{
       [[HardwareShortcuts sharedInstance]
           registerKeyCommand:input
-          modifierFlags:[flags integerValue]
+          modifierFlags:[modifierFlags integerValue]
           action:^(__unused UIKeyCommand *command) {
-            [self sendEventWithName:@"onKeyCommand" body:@{
-               @"input": [command.input lowercaseString],
-               @"modifierFlags": [NSNumber numberWithInteger:command.modifierFlags]
-            }];
+            id body = @{
+              @"input": [command.input lowercaseString],
+              @"modifierFlags": [NSNumber numberWithInteger:command.modifierFlags]
+            };
+            [self sendEventWithName:@"onKeyCommand" body:body];
           }];
     });
   }
@@ -54,7 +55,24 @@ RCT_REMAP_METHOD(unregisterKeyCommands,
                  withResolver:(RCTPromiseResolveBlock)resolve
                  withRejecter:(RCTPromiseRejectBlock)reject)
 {
-  [[HardwareShortcuts sharedInstance] unregisterKeyCommand];
+  NSArray<NSDictionary *> *commandsArray = json;
+
+  for (NSDictionary *commandJSON in commandsArray) {
+    NSString *input = commandJSON[@"input"];
+    NSNumber *modifierFlags = commandJSON[@"modifierFlags"];
+
+    if (!modifierFlags) {
+        modifierFlags = @0;
+    }
+
+    dispatch_async(dispatch_get_main_queue(), ^{
+      [[HardwareShortcuts sharedInstance]
+          unregisterKeyCommand:input
+          modifierFlags:[modifierFlags integerValue]
+      ];
+    });
+  }
+
   resolve(nil);
 }
 
