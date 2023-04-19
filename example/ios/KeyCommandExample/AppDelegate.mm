@@ -5,6 +5,7 @@
 #import <React/RCTRootView.h>
 
 #import <React/RCTAppSetupUtils.h>
+#import <HardwareShortcuts.h>
 
 #if RCT_NEW_ARCH_ENABLED
 #import <React/CoreModulesPlugins.h>
@@ -59,6 +60,14 @@ static NSString *const kRNConcurrentRoot = @"concurrentRoot";
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
   return YES;
+}
+
+- (NSArray *)keyCommands {
+  return [HardwareShortcuts sharedInstance].keyCommands;
+}
+
+- (void)handleKeyCommand:(UIKeyCommand *)keyCommand {
+  [[HardwareShortcuts sharedInstance] handleKeyCommand:keyCommand];
 }
 
 /// This method controls whether the `concurrentRoot`feature of React18 is turned on or off.

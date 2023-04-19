@@ -1,35 +1,32 @@
 #import <React/RCTBridgeModule.h>
 #import <React/RCTEventEmitter.h>
 #import <UIKit/UIKit.h>
+#import "HardwareShortcuts.h"
 
 extern NSDictionary *ModifierFlagsConstants;
 
+NSDictionary *ModifierFlagsConstants = @{
+  @"keyModifierCapsLock": @(UIKeyModifierAlphaShift),
+  @"keyModifierShift": @(UIKeyModifierShift),
+  @"keyModifierControl": @(UIKeyModifierControl),
+  @"keyModifierOption": @(UIKeyModifierAlternate),
+  @"keyModifierCommand": @(UIKeyModifierCommand),
+
+  @"keyModifierControlOption": @(UIKeyModifierControl | UIKeyModifierAlternate),
+  @"keyModifierControlOptionCommand": @(UIKeyModifierControl | UIKeyModifierAlternate | UIKeyModifierCommand),
+  @"keyModifierControlCommand": @(UIKeyModifierControl | UIKeyModifierCommand),
+  @"keyModifierOptionCommand": @(UIKeyModifierAlternate | UIKeyModifierCommand),
+  @"keyModifierShiftCommand": @(UIKeyModifierShift | UIKeyModifierCommand),
+  @"keyModifierNumericPad": @(UIKeyModifierNumericPad),
+  
+  @"keyInputUpArrow": UIKeyInputUpArrow,
+  @"keyInputDownArrow": UIKeyInputDownArrow,
+  @"keyInputLeftArrow": UIKeyInputLeftArrow,
+  @"keyInputRightArrow": UIKeyInputRightArrow,
+  @"keyInputEscape": UIKeyInputEscape,
+  @"keyInputEnter": @"\r",
+};
+
 @interface KeyCommand : RCTEventEmitter <RCTBridgeModule>
-
-@end
-
-
-@interface HardwareKeyCommands : NSObject
-
-+ (instancetype)sharedInstance;
-
-/**
- * Register a keyboard command.
- */
-- (void)registerKeyCommandWithInput:(NSString *)input
-                      modifierFlags:(UIKeyModifierFlags)flags
-                             action:(void (^)(UIKeyCommand *command))block;
-
-/**
- * Unregister a keyboard command.
- */
-- (void)unregisterKeyCommandWithInput:(NSString *)input
-                        modifierFlags:(UIKeyModifierFlags)flags;
-
-/**
- * Check if a command is registered.
- */
-- (BOOL)isKeyCommandRegisteredForInput:(NSString *)input
-                         modifierFlags:(UIKeyModifierFlags)flags;
 
 @end
