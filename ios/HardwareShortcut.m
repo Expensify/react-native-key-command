@@ -18,4 +18,14 @@
   return self;
 }
 
+- (BOOL)matchesInput:(NSString *)input flags:(UIKeyModifierFlags)flags
+{
+  return _key == input && _flags == flags;
+}
+
+- (BOOL)matchesInput:(UIKeyCommand *)keyCommand
+{
+  return _key == keyCommand.input && _flags == keyCommand.modifierFlags;
+}
+
 @end

@@ -21,11 +21,6 @@
   return sharedInstance;
 }
 
-+ (void)initialize
-{
-  
-}
-
 - (NSArray *)keyCommands {
   NSMutableArray *commands = [NSMutableArray array];
 
@@ -41,7 +36,7 @@
 
 - (void)handleKeyCommand:(UIKeyCommand *)keyCommand {
   [[_commands allObjects] enumerateObjectsUsingBlock:^(HardwareShortcut* obj, NSUInteger idx, BOOL *stop) {
-    if ([obj key] == keyCommand.input && [obj flags] == keyCommand.modifierFlags) {
+    if ([obj matchesInput:keyCommand]) {
       obj.block(keyCommand);
     }
   }];
@@ -58,7 +53,7 @@
 
 - (void)unregisterKeyCommand:(NSString *)input modifierFlags:(UIKeyModifierFlags)flags {
   [[_commands allObjects] enumerateObjectsUsingBlock:^(HardwareShortcut* obj, NSUInteger idx, BOOL *stop) {
-    if ([obj key] == input && [obj flags] == flags) {
+    if ([obj matchesInput:input flags:flags]) {
       [_commands removeObject:obj];
     }
   }];
