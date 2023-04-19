@@ -1,4 +1,5 @@
 #import "HardwareShortcuts.h"
+#import "RCTUtils.h"
 
 @implementation HardwareShortcuts
 
@@ -35,6 +36,8 @@
 }
 
 - (void)handleKeyCommand:(UIKeyCommand *)keyCommand {
+  RCTAssertMainQueue();
+
   [[_commands allObjects] enumerateObjectsUsingBlock:^(HardwareShortcut* hardwareShortcut, NSUInteger idx, BOOL *stop) {
     if ([hardwareShortcut matchesInput:keyCommand]) {
       hardwareShortcut.block(keyCommand);
@@ -46,12 +49,16 @@
              modifierFlags:(UIKeyModifierFlags)modifierFlags
                     action:(void (^)(UIKeyCommand *))block
 {
+  RCTAssertMainQueue();
+
   HardwareShortcut *keyCommand = [[HardwareShortcut alloc] init:input modifierFlags:modifierFlags block:block];
   [_commands removeObject:keyCommand];
   [_commands addObject:keyCommand];
 }
 
 - (void)unregisterKeyCommand:(NSString *)input modifierFlags:(UIKeyModifierFlags)modifierFlags {
+  RCTAssertMainQueue();
+
   [[_commands allObjects] enumerateObjectsUsingBlock:^(HardwareShortcut* hardwareShortcut, NSUInteger idx, BOOL *stop) {
     if ([hardwareShortcut matchesInput:input modifierFlags:modifierFlags]) {
       [_commands removeObject:hardwareShortcut];
