@@ -15,6 +15,28 @@ npm install react-native-key-command
 
 `cd ios && pod install`
 
+Changes required in your `AppDelegate.m`
+
+```
+// add library imports in the top of your file 
+#import <HardwareShortcuts.h>
+
+@implementation AppDelegate
+
+..
+
+// Add keyCommands and handleKeyCommand methods in AppDelegate class
+- (NSArray *)keyCommands {
+  return [HardwareShortcuts sharedInstance].keyCommands;
+}
+
+- (void)handleKeyCommand:(UIKeyCommand *)keyCommand {
+  [[HardwareShortcuts sharedInstance] handleKeyCommand:keyCommand];
+}
+
+@end
+```
+
 ## Android
 
 Changes required in your `MainActivity.java`
