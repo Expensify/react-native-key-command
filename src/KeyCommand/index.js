@@ -111,17 +111,25 @@ function getRegisteredCommandIndex(json) {
     const matchesLeftDown = item => (item.input === constants.keyInputLeftArrow && json.input === 'arrowleft');
     const matchesRightDown = item => (item.input === constants.keyInputRightArrow && json.input === 'arrowright');
 
-    return _.findIndex(commands, item => (
-        (item.input === json.input)
-        && matchesModifierFlags(item)
-    ) || (
-        matchesEnter(item) && matchesModifierFlags(item)
-    ) || matchesEscape(item)
-        || matchesEnter(item)
-        || matchesUpArrow(item)
-        || matchesDownArrow(item)
-        || matchesLeftDown(item)
-        || matchesRightDown(item));
+    // This does a strict check first to see if there is a match
+    // https://github.com/Expensify/App/issues/18480
+    const strictIndex = _.findIndex(commands, item => (
+        (item.input === json.input && matchesModifierFlags(item))
+        || (matchesEnter(item) && matchesModifierFlags(item))
+    ));
+
+    if (strictIndex < 0) {
+        return _.findIndex(commands, item => (
+            matchesEscape(item)
+            || matchesEnter(item)
+            || matchesUpArrow(item)
+            || matchesDownArrow(item)
+            || matchesLeftDown(item)
+            || matchesRightDown(item)
+        ));
+    }
+
+    return strictIndex;
 }
 
 /**
