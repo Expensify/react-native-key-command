@@ -204,5 +204,6 @@ export default {
     getConstants,
     registerKeyCommands,
     unregisterKeyCommands,
+    getRegisteredCommandIndex,
     EventEmitter,
 };

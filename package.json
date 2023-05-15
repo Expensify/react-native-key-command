@@ -53,6 +53,7 @@
     "eslint-plugin-jsx-a11y": "^6.6.1",
     "eslint-plugin-react": "^7.31.11",
     "jest": "^28.1.1",
+    "jest-environment-jsdom": "^29.5.0",
     "pod-install": "^0.1.38",
     "react": "^18.1.0",
     "react-native": "^0.70.4",
@@ -66,7 +67,7 @@
     "react-native-web": "^0.18.1"
   },
   "jest": {
-    "preset": "react-native",
+    "testEnvironment": "jest-environment-jsdom",
     "modulePathIgnorePatterns": [
       "<rootDir>/example/node_modules",
       "<rootDir>/lib/"
@@ -102,7 +103,17 @@
     ],
     "rules": {
       "no-restricted-imports": 0
-    }
+    },
+    "overrides": [
+      {
+        "files": [
+          "__tests__/**/*.test.js"
+        ],
+        "env": {
+          "jest": true
+        }
+      }
+    ]
   },
   "eslintIgnore": [
     "node_modules/",
