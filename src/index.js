@@ -93,11 +93,7 @@ function addListener(keyCommand, callback) {
         const isInputMatched = (response.input.toLowerCase()) === (validatedKeyCommand.input.toLowerCase());
         const isCommandMatched = (response.modifierFlags || 0) === (validatedKeyCommand.modifierFlags || 0);
 
-        if (!validatedKeyCommand.modifierFlags && isInputMatched) {
-            callback(response, event);
-        }
-
-        if (validatedKeyCommand.modifierFlags && isInputMatched && isCommandMatched) {
+        if (isInputMatched && isCommandMatched) {
             callback(response, event);
         }
     };

@@ -69,17 +69,14 @@ public class KeyCommandModule extends ReactContextBaseJavaModule {
          * - {input: '123'}
          */
         for (ReadableMap registeredCommand : commandsArray) {
-            boolean hasModifier = registeredCommand.hasKey("modifierFlags");
+            int registeredCommandModifierFlags = registeredCommand.hasKey("modifierFlags") ? registeredCommand.getInt("modifierFlags") : 0;
+            int commandModifierFlags = command.hasKey("modifierFlags") ? command.getInt("modifierFlags") : 0;
+            
             boolean matchInput = registeredCommand.getString("input").equals(command.getString("input"));
-            if (!hasModifier && matchInput) {
-                return true;
-            }
+            boolean matchModifierFlags = registeredCommandModifierFlags == commandModifierFlags;
 
-            if (hasModifier) {
-                boolean matchModifier = registeredCommand.getInt("modifierFlags") == command.getInt("modifierFlags");
-                if (matchInput && matchModifier) {
-                    return true;
-                }
+            if (matchInput && matchModifierFlags) {
+                return true;
             }
         }
 
