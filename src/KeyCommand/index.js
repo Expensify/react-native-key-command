@@ -1,5 +1,5 @@
 import _ from 'underscore';
-import Events from 'events';
+import Events from 'eventemitter3';
 
 const EventEmitter = new Events();
 
