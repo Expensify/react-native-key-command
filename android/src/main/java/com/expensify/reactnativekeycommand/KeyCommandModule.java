@@ -103,29 +103,31 @@ public class KeyCommandModule extends ReactContextBaseJavaModule {
         else if (keyEvent.isShiftPressed()) {
             modifierFlags = KeyEvent.META_SHIFT_MASK;
         }
-        else if (keyEvent.getKeyCode() == KeyEvent.KEYCODE_ESCAPE) {
-            modifierFlags = KeyEvent.KEYCODE_ESCAPE;
+
+        int inputKeyCode = 0;
+        if (keyEvent.getKeyCode() == KeyEvent.KEYCODE_ESCAPE) {
+            inputKeyCode = KeyEvent.KEYCODE_ESCAPE;
         }
         else if (keyEvent.getKeyCode() == KeyEvent.KEYCODE_DPAD_UP) {
-            modifierFlags = KeyEvent.KEYCODE_DPAD_UP;
+            inputKeyCode = KeyEvent.KEYCODE_DPAD_UP;
         }
         else if (keyEvent.getKeyCode() == KeyEvent.KEYCODE_DPAD_DOWN) {
-            modifierFlags = KeyEvent.KEYCODE_DPAD_DOWN;
+            inputKeyCode = KeyEvent.KEYCODE_DPAD_DOWN;
         }
         else if (keyEvent.getKeyCode() == KeyEvent.KEYCODE_DPAD_LEFT) {
-            modifierFlags = KeyEvent.KEYCODE_DPAD_LEFT;
+            inputKeyCode = KeyEvent.KEYCODE_DPAD_LEFT;
         }
         else if (keyEvent.getKeyCode() == KeyEvent.KEYCODE_DPAD_RIGHT) {
-            modifierFlags = KeyEvent.KEYCODE_DPAD_RIGHT;
+            inputKeyCode = KeyEvent.KEYCODE_DPAD_RIGHT;
         }
         else if (keyEvent.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
-            modifierFlags = KeyEvent.KEYCODE_ENTER;
+            inputKeyCode = KeyEvent.KEYCODE_ENTER;
         }
 
         /**
-         * Handle an event where modifier (e.g. ESC) is pressed without input key (e.g. F)
+         * Handle an event where an input (e.g. ESC) is pressed that has no display label
          */
-        String input = String.valueOf(modifierFlags);
+        String input = String.valueOf(inputKeyCode);
         String displayLabel = String.valueOf(keyEvent.getDisplayLabel())
             .replaceAll("[^A-Za-z0-9]", "")
             .toLowerCase();
