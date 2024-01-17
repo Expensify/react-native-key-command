@@ -16,15 +16,5 @@ Pod::Spec.new do |s|
 
   s.source_files = "ios/**/*.{h,m,mm}"
 
-  s.dependency "React-Core"
-
-  # Don't install the dependencies when we run `pod install` in the old architecture.
-  if ENV['RCT_NEW_ARCH_ENABLED'] == '1' then
-    s.compiler_flags = folly_compiler_flags + " -DRCT_NEW_ARCH_ENABLED=1"
-    s.pod_target_xcconfig    = {
-        "HEADER_SEARCH_PATHS" => "\"$(PODS_ROOT)/boost\"",
-        "CLANG_CXX_LANGUAGE_STANDARD" => "c++17"
-    }
-
-    install_modules_dependencies(s)
+  install_modules_dependencies(s)
 end
