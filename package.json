@@ -22,7 +22,7 @@
   "scripts": {
     "test": "jest",
     "lint": "eslint \"**/*.{js, jsx}\"",
-    "prepare": "bob build",
+    "build": "bob build",
     "release": "release-it",
     "example": "npm run --prefix example"
   },
