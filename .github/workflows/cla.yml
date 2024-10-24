@@ -1,0 +1,29 @@
+name: CLA Assistant
+on:
+  workflow_call:
+  issue_comment:
+    types: [created]
+  pull_request_target:
+    types: [opened, synchronize]
+
+jobs:
+  CLA:
+    runs-on: ubuntu-latest
+    # This job should only run for pull request comments or pull request target events (not issue comments)
+    if: github.event.issue.pull_request || github.event_name == 'pull_request_target'
+    steps:
+      - name: CLA Assistant
+        if: (github.event.comment.body == 'recheck' || github.event.comment.body == 'I have read the CLA Document and I hereby sign the CLA') || github.event_name == 'pull_request_target'
+        # Version: 2.6.1
+        uses: contributor-assistant/github-action@ca4a40a7d1004f18d9960b404b97e5f30a505a08
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PERSONAL_ACCESS_TOKEN: ${{ secrets.CLA_BOTIFY_TOKEN }}
+        with:
+          path-to-signatures: '${{ github.repository }}/cla.json'
+          path-to-document: 'https://github.com/${{ github.repository }}/blob/main/CLA.md'
+          branch: 'main'
+          remote-organization-name: 'Expensify'
+          remote-repository-name: 'CLA'
+          lock-pullrequest-aftermerge: false
+          allowlist: 'snyk-bot,OSBotify,os-botify[bot],imgbot[bot]'
