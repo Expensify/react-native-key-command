@@ -12,7 +12,8 @@ This project and everyone participating in it is governed by the Expensify [Code
 At this time, we are not hiring contractors in Crimea, North Korea, Russia, Iran, Cuba, or Syria.
 
 ## Asking Questions
-If you have any general questions, please ask in the #expensify-open-source Slack channel. To request an invite to the channel, just email contributors@expensify.com with the subject Slack Channel Invite and include a link to your Upwork profile. We'll send you an invite! Note: The Expensify team will not be able to respond to direct messages in Slack.
+If you have any general questions, please email contributors@expensify.com. We have a shared Slack channel called #expensify-open-source — this channel is used to ask general questions, facilitate discussions, and make feature requests. That said, we have a small issue with adding users at the moment and we’re working with Slack to try and get this resolved. If you would like to join, fill out [this form](https://forms.gle/Q7hnhUJPnQCK7Fe56) with your email and Upwork profile link. Once resolved, we’ll add you. 
+
 If you are hired for an Upwork job and have any job-specific questions, please ask in the GitHub issue or pull request. This will ensure that the person addressing your question has as much context as possible.
 
 ## Reporting Vulnerabilities
