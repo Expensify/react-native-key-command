@@ -31,7 +31,7 @@
     "ios",
     "android"
   ],
-  "repository": "http://github.com/expensify/react-native-key-command",
+  "repository": "http://github.com/Expensify/react-native-key-command",
   "author": "Expensify, Inc.",
   "license": "MIT",
   "bugs": {
