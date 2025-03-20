@@ -76,3 +76,6 @@ To edit the Kotlin files, open `example/android` in Android studio and find the 
 ### Sending a pull request
 
 > **Working on your first pull request?** You can learn how from this _free_ series: [How to Contribute to an Open Source Project on GitHub](https://app.egghead.io/playlists/how-to-contribute-to-an-open-source-project-on-github).
+
+
+Minor update to documentation.
