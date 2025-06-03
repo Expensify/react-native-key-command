@@ -116,6 +116,7 @@ function getRegisteredCommandIndex(json) {
     const strictIndex = _.findIndex(commands, item => (
         (item.input === json.input && matchesModifierFlags(item))
         || (matchesEnter(item) && matchesModifierFlags(item))
+        || (matchesEscape(item) && matchesModifierFlags(item))
     ));
 
     if (strictIndex < 0) {
