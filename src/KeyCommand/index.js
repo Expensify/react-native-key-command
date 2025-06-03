@@ -114,7 +114,7 @@ function getRegisteredCommandIndex(json) {
     // This does a strict check first to see if there is a match
     // https://github.com/Expensify/App/issues/18480
     const strictIndex = _.findIndex(commands, item => (
-        (item.input === json.input && matchesModifierFlags(item))
+        ((item.input === json.input || (matchesEscape(item))) && matchesModifierFlags(item))
         || (matchesEnter(item) && matchesModifierFlags(item))
     ));
 

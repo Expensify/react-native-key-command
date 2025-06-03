@@ -42,6 +42,11 @@ export default function App() {
     }, []);
 
     React.useEffect(() => {
+        const KEY_COMMAND = {input: KeyCommand.constants.keyInputEscape, modifierFlags: KeyCommand.constants.keyModifierShift};
+        return KeyCommand.addListener(KEY_COMMAND, () => handleSearchCommandPress('[Shift + Esc] pressed'));
+    }, []);
+
+    React.useEffect(() => {
         const KEY_COMMAND = {input: KeyCommand.constants.keyInputEscape};
         return KeyCommand.addListener(KEY_COMMAND, () => handleSearchCommandPress('[Esc] pressed'));
     }, []);
@@ -78,9 +83,10 @@ export default function App() {
                 <Text style={styles.title}>1. [CMD + F]</Text>
                 <Text style={styles.title}>2. [G]</Text>
                 <Text style={styles.title}>3. [Esc]</Text>
-                <Text style={styles.title}>4. [CMD + SHIFT + K]</Text>
-                <Text style={styles.title}>5. [ENTER]</Text>
-                <Text style={styles.title}>6. [DOWN / UP ARROW]</Text>
+                <Text style={styles.title}>4. [Shift + Esc]</Text>
+                <Text style={styles.title}>5. [CMD + SHIFT + K]</Text>
+                <Text style={styles.title}>6. [ENTER]</Text>
+                <Text style={styles.title}>7. [DOWN / UP ARROW]</Text>
             </View>
 
             <ScrollView style={styles.scroll}>
