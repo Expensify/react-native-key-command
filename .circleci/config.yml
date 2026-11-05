@@ -3,7 +3,7 @@ version: 2.1
 executors:
   default:
     docker:
-      - image: cimg/node:24.22.1
+      - image: cimg/node:24
     working_directory: ~/project
 
 commands:
