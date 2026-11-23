@@ -23,7 +23,16 @@
     "@craco/craco": "7.0.0",
     "babel-plugin-module-resolver": "^4.1.0",
     "metro-react-native-babel-preset": "^0.73.10",
-    "react-app-alias-ex": "^2.1.0"
+    "react-app-alias-ex": "^2.1.0",
+    "react-dev-utils": "12.0.1"
+  },
+  "overrides": {
+    "react-scripts": {
+      "webpack-dev-server": {
+        ".": "5.2.7",
+        "webpack-dev-middleware": "^7.4.6"
+      }
+    }
   },
   "browserslist": {
     "production": [
