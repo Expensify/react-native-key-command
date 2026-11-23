@@ -72,6 +72,11 @@
     "react-native-builder-bob": "^0.18.3",
     "release-it": "^15.0.0"
   },
+  "overrides": {
+    "external-editor": {
+      "tmp": "0.2.7"
+    }
+  },
   "peerDependencies": {
     "react": ">=18.1.0",
     "react-dom": ">=18.1.0",
