@@ -140,7 +140,7 @@
     ]
   },
   "dependencies": {
-    "underscore": "^1.13.4",
+    "underscore": "^1.13.8",
     "eventemitter3": "^5.0.1"
   }
 }
