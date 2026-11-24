@@ -1,6 +1,6 @@
 {
   "name": "react-native-key-command",
-  "version": "1.0.20",
+  "version": "1.0.26",
   "description": "A cross-platform module that registers and listens to specified keyboard events, dispatching the payload to JavaScript",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
@@ -23,7 +23,6 @@
     "test": "jest",
     "lint": "eslint \"**/*.{js, jsx}\"",
     "build": "bob build",
-    "release": "release-it",
     "example": "npm run --prefix example"
   },
   "keywords": [
@@ -58,7 +57,6 @@
     "@babel/eslint-parser": "^7.18.2",
     "@commitlint/config-conventional": "^17.0.2",
     "@lwc/eslint-plugin-lwc": "^1.4.0",
-    "@release-it/conventional-changelog": "^5.0.0",
     "commitlint": "^17.0.2",
     "eslint": "^8.4.1",
     "eslint-config-expensify": "^2.0.29",
@@ -67,10 +65,10 @@
     "jest": "^28.1.1",
     "jest-environment-jsdom": "^29.5.0",
     "pod-install": "^0.1.38",
-    "react": "^18.1.0",
-    "react-native": "^0.70.4",
-    "react-native-builder-bob": "^0.18.3",
-    "release-it": "^15.0.0"
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-native": "^0.71.19",
+    "react-native-builder-bob": "^0.18.3"
   },
   "peerDependencies": {
     "react": ">=18.1.0",
@@ -89,23 +87,6 @@
     "extends": [
       "@commitlint/config-conventional"
     ]
-  },
-  "release-it": {
-    "git": {
-      "commitMessage": "chore: release ${version}",
-      "tagName": "v${version}"
-    },
-    "npm": {
-      "publish": true
-    },
-    "github": {
-      "release": true
-    },
-    "plugins": {
-      "@release-it/conventional-changelog": {
-        "preset": "angular"
-      }
-    }
   },
   "eslintConfig": {
     "root": true,
