@@ -53,6 +53,7 @@
     }
   },
   "devDependencies": {
+    "@arkweid/lefthook": "^0.7.7",
     "@babel/eslint-parser": "^7.18.2",
     "@commitlint/config-conventional": "^17.0.2",
     "@lwc/eslint-plugin-lwc": "^1.4.0",
@@ -63,7 +64,6 @@
     "eslint-plugin-react": "^7.31.11",
     "jest": "^28.1.1",
     "jest-environment-jsdom": "^29.5.0",
-    "lefthook": "2.2.2",
     "pod-install": "^0.1.38",
     "react": "18.2.0",
     "react-dom": "18.2.0",
