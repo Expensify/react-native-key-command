@@ -70,6 +70,9 @@
     "react-native": "^0.71.19",
     "react-native-builder-bob": "^0.18.3"
   },
+  "overrides": {
+    "form-data": "^4.0.6"
+  },
   "peerDependencies": {
     "react": ">=18.1.0",
     "react-dom": ">=18.1.0",
