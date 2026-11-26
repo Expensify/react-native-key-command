@@ -1,6 +1,6 @@
 {
   "name": "react-native-key-command",
-  "version": "1.0.32",
+  "version": "1.0.33",
   "description": "A cross-platform module that registers and listens to specified keyboard events, dispatching the payload to JavaScript",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
@@ -71,7 +71,11 @@
     "react-native-builder-bob": "^0.18.3"
   },
   "overrides": {
-    "form-data": "^4.0.6"
+    "external-editor": {
+      "tmp": "0.2.7"
+    },
+    "flatted": "^3.4.2",
+    "lodash": "^4.18.1"
   },
   "peerDependencies": {
     "react": ">=18.1.0",
@@ -126,12 +130,5 @@
   "dependencies": {
     "underscore": "^1.13.8",
     "eventemitter3": "^5.0.1"
-  },
-  "overrides": {
-    "external-editor": {
-      "tmp": "0.2.7"
-    },
-    "flatted": "^3.4.2",
-    "lodash": "^4.18.1"
   }
 }
