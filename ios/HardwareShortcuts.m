@@ -1,5 +1,5 @@
 #import "HardwareShortcuts.h"
-#import "RCTUtils.h"
+#import <React/RCTUtils.h>
 
 @implementation HardwareShortcuts
 
